@@ -1,0 +1,39 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">10dp</dimen>
+    <dimen name="activity_vertical_margin">10dp</dimen>
+    <dimen name="text_small">14sp</dimen>
+    <dimen name="business_card_height">45dp</dimen>
+    <dimen name="business_card_width">93dp</dimen>
+    <dimen name="recyle_view_height">120dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="default_elevation">8dp</dimen>
+    <dimen name="app_bar_height">220dp</dimen>
+    <dimen name="btn_fab_size">56dp</dimen>
+    <dimen name="image_view_height">30dp</dimen>
+    <dimen name="social_icon_width">64dp</dimen>
+    <dimen name="register_container_size">90dp</dimen>
+    <dimen name="text_padding">10dp</dimen>
+    <dimen name="margin_top">10dp</dimen>
+    <dimen name="social_icon_text_size">14sp</dimen>
+    <dimen name="normal_text_size">14sp</dimen>
+    <dimen name="forgot_text_size">14sp</dimen>
+    <dimen name="or_padding">12dp</dimen>
+    <dimen name="or_margin">5dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
+    <dimen name="margin_36">36dp</dimen>
+
+
+    <!-- Value created by Dinesh -->
+    <dimen name="textsize_header">18sp</dimen>
+    <dimen name="register_container_size2">65dp</dimen>
+    <dimen name="register_container_size3">120dp</dimen>
+    <dimen name="reg_button_width">135dp</dimen>
+    <dimen name="reg3_button_width">200dp</dimen>
+    <dimen name="button_height">35dp</dimen>
+    <dimen name="textsize_16">16dp</dimen>
+    <dimen name="edittext_height">42dp</dimen>
+    <dimen name="reg3_padding">25dp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+</resources>

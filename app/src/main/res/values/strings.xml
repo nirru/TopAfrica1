@@ -1,0 +1,144 @@
+<resources>
+    <string name="app_name">Top Africa</string>
+    <string name="search_hint">What</string>
+    <string name="search_cat_hint">Search Category</string>
+    <string name="action_settings">Settings</string>
+    <!--    Permissions    -->
+    <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
+    <string name="location_permission_denied">This sample requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \'Google Maps API Demos\'.</string>
+    <string name="permission_required_toast">Location permission is required for this demo.</string>
+
+    <!-- TODO:FETCH INTENT ADDRESS -->
+    <string name="no_geocoder_available">No geocoder available</string>
+    <string name="fetch_address">Fetch address</string>
+    <string name="address_found">Address found</string>
+    <string name="no_address_found">Sorry, no address found</string>
+    <string name="no_location_data_provided">No location data provided</string>
+    <string name="service_not_available">Sorry, the service is not available</string>
+    <string name="invalid_lat_long_used">Invalid latitude or longitude used</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="dialog_message">It seems that you are not connected to Internet.Please connect your app to Internet.</string>
+    <string name="setting_dialog_title">Use Location Services</string>
+    <string name="setting_dialog_message">Top Africa would like to access your location.</string>
+    <string name="dialog_title">Use Internet Connection</string>
+
+    <string name="agree">AGREE</string>
+    <string name="disagree">DISAGREE</string>
+
+    <string name="check_rate">Check &amp; Rate</string>
+    <string name="create_business">Create Your Business</string>
+
+    <string name="bus_cat_1">Wheather</string>
+    <string name="bus_cat_2">Restaurent</string>
+    <string name="bus_cat_3">Bars</string>
+    <string name="bus_cat_4">Hotel</string>
+    <string name="bus_cat_5">Fuel</string>
+    <string name="bus_cat_6">Parking</string>
+    <string name="bus_cat_7">Pharmacies</string>
+    <string name="bus_cat_8">Hospital</string>
+    <string name="bus_cat_9">Medicines</string>
+    <string name="my_favourite">My Favourite</string>
+    <string name="title_activity_list">ListActivity</string>
+    <string name="title_activity_category">CategoryActivity</string>
+
+    <string name="review">13 Review</string>
+    <string name="open">Open</string>
+    <string name="business_name">Business Name</string>
+    <string name="business_address">Business Address</string>
+    <string name="business_title">Title</string>
+    <string name="business_category">Category</string>
+    <string name="business_menu">Menu</string>
+    <string name="business_review">Review</string>
+    <string name="business_text_open">Open</string>
+    <string name="business_offer_key">Coupan</string>
+    <string name="business_offer_value">30 Percent OFF</string>
+
+    <string name="intro">Welcom to Top Africa where You can search and list your business .</string>
+
+    <string name="filter">Filter</string>
+
+    <!-- TODO:CREATE BUSINESS SCREEN -->
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_business_name">Business Name</string>
+    <string name="hint_business_short_name">Business Short Name</string>
+    <string name="hint_business_category">Business Category</string>
+    <string name="hint_business_website">Website</string>
+    <string name="hint_business_description">Its good to have a description of 300 character or more.</string>
+    <string name="hint_business_type_1">Enterprise</string>
+    <string name="hint_business_type_2">Professional</string>
+    <string name="hint_business_type_3">Personnel</string>
+    <string name="hint_business_email">Primary Email</string>
+    <string name="hint_business_sec_email">Secondary Email</string>
+    <string name="hint_business_telephone">Telephone</string>
+    <string name="hint_business_fax">Fax</string>
+    <string name="next_btn">Next</string>
+    <string name="save_btn">Save</string>
+    <string name="prv_btn">Previous</string>
+    <string name="hint_country">Senegal</string>
+    <string name="hint_region">Region</string>
+    <string name="hint_department">Department</string>
+    <string name="hint_city">City</string>
+    <string name="hint_state">State</string>
+    <string name="hint_district">District</string>
+    <string name="hint_neighborhood">Neighborhood</string>
+    <string name="hint_street">Street</string>
+    <string name="hint_address">Addresse</string>
+    <string name="hint_lat">Geo Coordinates</string>
+    <string name="upload_logo">Upload your business Logo</string>
+    <string name="upload_picture">Upload your business Picture</string>
+
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+
+    <string name="menu_item_login">Login</string>
+    <string name="menu_item_create_business">Create your business</string>
+    <string name="menu_item_claim_business">Claim your business</string>
+    <string name="menu_item_manage_business">Manage your business</string>
+    <string name="menu_item_favourite">Faviourite</string>
+    <string name="menu_item_recent_search">Recent search</string>
+    <string name="menu_item_share">Share this app</string>
+    <string name="menu_item_rate">Rate this app</string>
+    <string name="menu_item_settings">Settings</string>
+    <string name="menu_item_logout">Logout</string>
+
+    <string name="prompt_empoyee">Choose number of employee</string>
+    <string name="rate_buisness">Rate this business</string>
+    <string name="hint_comment">Join the community .Help other by sharing your experience about this place.</string>
+    <string name="hint_leve_comment">Leave a comment.</string>
+
+    <string name="confirmation_title">Call Business</string>
+
+    <string name="facebook_app_id">1905011759726871</string>
+
+    <string name="web_client_id">1087214010302-90rf08rue3lkctka9p9kffe6527pho9f.apps.googleusercontent.com</string>
+
+
+    <!-- TODO:Login Screen -->
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="google">Google</string>
+    <string name="linkedIn">LinkedIn</string>
+
+
+    <!--<TODO:RegisterScreen-->
+
+    <string name="hint_mobile">Mobile Number</string>
+    <string name="hint_cnfrm_pwd">Confirm Password</string>
+    <string name="terms_and_conditions">I read and i agree to the terms and conditions of use of the Top Africa account and services.</string>
+    <string name="already_reg">Already registered?</string>
+    <string name="action_signin">Sign In</string>
+    <string name="nikname_string">Your nickname is used for reviews</string>
+    <string name="hint_nikname">Nickname</string>
+    <string name="register2_message">Complete your information to provide you a personalized service</string>
+    <string name="action_gender">Gender</string>
+    <string name="hint_firstname">First Name</string>
+    <string name="hint_lastname">Last Name</string>
+    <string name="hint_workplace">Work Place</string>
+    <string name="hint_homeplace">Home Place</string>
+    <string name="hint_birth">Birthday</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

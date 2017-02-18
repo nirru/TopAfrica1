@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="2.0"
+    android:background="@color/reg_container">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1.6"
+        android:weightSum="2">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="1.4">
+
+            <TextView
+                android:id="@+id/reg_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thank You bobafett22,"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/textsize_16"
+                android:layout_marginBottom="@dimen/margin_36"
+                android:layout_above="@+id/reg_container2"
+                android:gravity="center"/>
+
+
+            <TextView
+                android:id="@+id/reg_container2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A Confirmation email has been sent to you at the address :"
+                android:textColor="@android:color/black"
+                android:padding="@dimen/reg3_padding"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:textSize="@dimen/textsize_16"/>
+
+            <TextView
+                android:id="@+id/reg_container3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="bobafett@starwars.com"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/textsize_16"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_below="@+id/reg_container2"/>
+
+            <TextView
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_alignParentBottom="true"/>
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/reg_container5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/activity_vertical_margin"
+                android:text="Check your emails and click on the link to activate your account."
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/textsize_16"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:gravity="center"
+        android:background="@android:color/white">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/register3"
+            android:layout_width="@dimen/reg3_button_width"
+            android:layout_height="@dimen/button_height"
+            android:text="Check your email"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:background="@drawable/reg_button_rect_shape"/>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

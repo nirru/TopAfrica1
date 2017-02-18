@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_sign_up2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.africa.annauiare.activity.newActivity.SignUp">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/view_common_toolbar" />
+
+    <include
+        android:id="@+id/regview1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        layout="@layout/registerscreen1"
+        android:visibility="visible" />
+    <include
+        android:id="@+id/regview2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        layout="@layout/registerscreen2"
+        android:visibility="gone"/>
+    <include
+        android:id="@+id/regview3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        layout="@layout/registerscreen3"
+        android:visibility="gone"/>
+
+</RelativeLayout>

@@ -1,0 +1,38 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/menu_group_1">
+
+        <item
+            android:id="@id/id_menu_create_business"
+            android:title="@string/menu_item_create_business" />
+        <item
+            android:id="@id/id_menu_claim_business"
+            android:title="@string/menu_item_claim_business" />
+        <item
+            android:id="@id/id_menu_manage_business"
+            android:title="@string/menu_item_manage_business" />
+
+        <item
+            android:id="@id/id_menu_favourite"
+            android:title="@string/menu_item_favourite" />
+        <item
+            android:id="@id/id_menu_recent_search"
+            android:title="@string/menu_item_recent_search" />
+        <item
+            android:id="@id/id_menu_share_app"
+            android:title="@string/menu_item_share" />
+        <item
+            android:id="@id/id_menu_rate_app"
+            android:title="@string/menu_item_rate" />
+        <item
+            android:id="@id/id_menu_settings"
+            android:title="@string/menu_item_settings" />
+
+        <item
+            android:id="@id/id_menu_logout"
+            android:icon="@drawable/logout"
+            android:title="@string/menu_item_logout" />
+
+
+    </group>
+
+</menu>

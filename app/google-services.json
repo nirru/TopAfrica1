@@ -1,0 +1,75 @@
+{
+  "project_info": {
+    "project_number": "147508338544",
+    "firebase_url": "https://fir-top-africa.firebaseio.com",
+    "project_id": "firebase-top-africa",
+    "storage_bucket": "firebase-top-africa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147508338544:android:67e4400b36b72a3a",
+        "android_client_info": {
+          "package_name": "com.africa.annauiare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "147508338544-dk46hkllsmk8ns0egb43087vfv9o4k32.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.africa.annauiare",
+            "certificate_hash": "279A809EB0E7DE09BC03A4F4D551E94F85745798"
+          }
+        },
+        {
+          "client_id": "147508338544-l6olo283m5lkg49nl2or7qa1mb1qd05a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.africa.annauiare",
+            "certificate_hash": "A4296626AA85F466E45A4C16A3087EB372599C4E"
+          }
+        },
+        {
+          "client_id": " 147508338544-dr4bjrdi601cpllineq81jbva91nblv7.apps.googleusercontent.com ",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.africa.annauiare",
+            "certificate_hash": "4CE364552FF75E1D43E9D4C5A5D30FBB0D9C15C8"
+          }
+        },
+        {
+          "client_id": "147508338544-gm4a80sppt8unq7e1p16gvign3hlt2m7.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "147508338544-15j4up9nt2j3ni5nvj819jjro91u407b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD36qRZRXxWAqQlEPgO1alYLH7NQC7UdpM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "147508338544-gm4a80sppt8unq7e1p16gvign3hlt2m7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

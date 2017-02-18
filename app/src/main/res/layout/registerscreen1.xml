@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/registrion"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/register_container_size"
+            android:text="Register in less than one minute"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:background="@color/reg_container"
+            android:textSize="@dimen/textsize_16"/>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_input_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/registrion"
+            android:layout_marginTop="@dimen/margin_10"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin">
+
+            <EditText
+                android:id="@id/id_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_email"
+                android:ems="40"
+                android:lines="1"
+                android:textSize="@dimen/text_small"
+                android:inputType="text"/>
+        </android.support.design.widget.TextInputLayout>
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:id="@+id/text_input_mobile"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/text_input_email"-->
+            <!--android:paddingLeft="@dimen/activity_vertical_margin"-->
+            <!--android:paddingRight="@dimen/activity_vertical_margin">-->
+
+            <!--<EditText-->
+                <!--android:id="@id/id_mobile_no"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:hint="@string/hint_mobile"-->
+                <!--android:ems="40"-->
+                <!--android:lines="1"-->
+                <!--android:textAppearance="?android:textAppearanceSmall"-->
+                <!--android:inputType="text"/>-->
+        <!--</android.support.design.widget.TextInputLayout>-->
+
+        <RelativeLayout
+            android:id="@+id/mobile_relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_input_email"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
+
+            <RelativeLayout
+                android:id="@+id/country_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <ImageView
+                    android:id="@+id/country_flag"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/flag_sn"/>
+
+                <TextView
+                    android:id="@id/id_country_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/country_flag"
+                    android:hint="+221"
+                    android:layout_centerVertical="true"
+                    android:padding="5dp"
+                    android:lines="1"
+                    android:textSize="@dimen/text_small"/>
+
+
+            </RelativeLayout>
+
+            <EditText
+                android:id="@id/id_mobile_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_small"
+                android:layout_toRightOf="@id/country_view"
+                android:hint="@string/hint_mobile"
+                android:ems="40"
+                android:lines="1"
+                android:inputType="phone"/>
+
+        </RelativeLayout>
+
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_input_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mobile_relative"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin">
+
+            <EditText
+                android:id="@id/id_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_password"
+                android:textSize="@dimen/text_small"
+                android:lines="1"
+                android:inputType="textPassword"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_confirm_passowrd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_input_password"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin">
+
+            <EditText
+                android:id="@id/id_confirm_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_cnfrm_pwd"
+                android:lines="1"
+                android:textSize="@dimen/text_small"
+                android:inputType="textPassword"/>
+        </android.support.design.widget.TextInputLayout>
+        <RelativeLayout
+            android:id="@+id/reg_terms_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/register_container_size2"
+            android:background="@color/reg_container"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:layout_below="@+id/input_confirm_passowrd">
+            <android.support.v7.widget.AppCompatCheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:id="@+id/appCompatCheckBox" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/terms_and_conditions"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_small"
+                android:id="@+id/textView"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/appCompatCheckBox"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/next_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_20"
+            android:layout_below="@+id/reg_terms_container">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/register1"
+                android:layout_width="@dimen/reg_button_width"
+                android:layout_height="@dimen/button_height"
+                android:enabled="false"
+                android:text="Next"
+                android:textAllCaps="false"
+                android:textSize="@dimen/textsize_16"
+                android:textColor="@android:color/black"
+                android:background="@drawable/reg_button_rect_shape"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/reg_bottom_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/register_container_size2"
+            android:layout_below="@+id/next_container"
+            android:background="@color/reg_container"
+            android:gravity="center"
+            android:paddingLeft="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:layout_alignParentBottom="true">
+            <TextView
+                android:id="@+id/text_already"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="@string/already_reg"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_small"/>
+
+            <TextView
+                android:id="@+id/sign_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_signin"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_toRightOf="@+id/text_already"
+                android:textColor="@color/reg_link"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:textSize="@dimen/text_small"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+
+</android.support.v4.widget.NestedScrollView>
