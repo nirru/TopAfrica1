@@ -10,7 +10,7 @@
     <dimen name="default_elevation">8dp</dimen>
     <dimen name="app_bar_height">220dp</dimen>
     <dimen name="btn_fab_size">56dp</dimen>
-    <dimen name="image_view_height">30dp</dimen>
+    <dimen name="image_view_height">52dp</dimen>
     <dimen name="social_icon_width">70dp</dimen>
     <dimen name="register_container_size">110dp</dimen>
     <dimen name="text_padding">12dp</dimen>

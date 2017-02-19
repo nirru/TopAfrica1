@@ -9,8 +9,9 @@
     <color name="yellow_500">#FFEB3B</color>
     <color name="yellow_200">#FFF59D</color>
     <color name="white">#FFFFFF</color>
-
-
+    <color name="black">#000</color>
+    <color name="green">#FF047C02</color>
+    <color name="light_yellow">#f3d8af</color>
     <!--TODO: created by Dinesh-->
     <color name="reg_container">#ffe0b2</color>
     <color name="reg_link">#074cbd</color>

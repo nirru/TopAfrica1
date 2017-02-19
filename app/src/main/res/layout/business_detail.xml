@@ -35,7 +35,7 @@
                 android:id="@id/id_image_bus_logo_camera"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/heart"/>
+                android:src="@drawable/ic_fav"/>
 
             <TextView
                 android:id="@id/id_card_business_name"
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:paddingLeft="10dp"
-                    android:src="@drawable/mail"/>
+                    android:src="@drawable/ic_email"/>
 
                 <TextView
                     android:id="@id/id_card_business_text_email"
@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:paddingLeft="10dp"
-                    android:src="@drawable/ic_website"/>
+                    android:src="@drawable/ic_web"/>
 
                 <TextView
                     android:id="@id/id_card_business_text_website"
@@ -153,7 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:paddingLeft="10dp"
-                    android:src="@drawable/facebook"/>
+                    android:src="@drawable/ic_fb"/>
 
                 <TextView
                     android:id="@id/id_card_business_text_facebook"
@@ -202,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:paddingLeft="10dp"
-                    android:src="@drawable/ic_g_plus"/>
+                    android:src="@drawable/ic_gplus"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -309,7 +309,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:paddingLeft="10dp"
-                    android:src="@drawable/ic_ring"/>
+                    android:src="@drawable/ic_fb"/>
 
                 <TextView
                     android:id="@id/id_card_business_text_telephone"
@@ -340,7 +340,7 @@
                        android:id="@id/id_card_business_route"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:src="@drawable/route"
+                       android:src="@drawable/ic_share"
                        android:layout_toLeftOf="@id/id_card_business_text_route"
                        android:layout_centerVertical="true"
                        android:paddingRight="10dp"/>
