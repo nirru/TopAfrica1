@@ -1,10 +1,12 @@
 package com.africa.annauiare.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.africa.annauiare.ObjectSetter;
+import com.africa.annauiare.activity.CategoryActivity;
+import com.africa.annauiare.activity.LandingActivity;
+import com.africa.annauiare.rx.firebase.RxFirebaseDatabase;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import com.africa.annauiare.R;
@@ -25,11 +34,13 @@ import com.africa.annauiare.rx.DisplayTextOnViewAction;
 import com.africa.annauiare.rx.ErrorHandler;
 import com.africa.annauiare.rx.FallbackReverseGeocodeObservable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -166,20 +177,13 @@ public class CategoryListAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
         if(holder instanceof EventViewHolder){
             setFadeAnimation(holder.itemView);
             T dataItem = dataSet.get(position);
-            ((EventViewHolder) holder).textView_business_name.setText(((Businesse)dataItem).getName().toString());
-            String[] geoArray = ((Businesse)dataItem).getOfficeLocation().trim().split(",");
-            double lat = Double.valueOf(geoArray[0]);
-            double lng = Double.valueOf(geoArray[1]);
-            getStringAdress(lat,lng,((EventViewHolder) holder).textView_business_address);
-            ((EventViewHolder) holder).textView_business_title_value.setText(((Businesse)dataItem).getCategory().toString());
-            ((EventViewHolder) holder).textView_business_menu_value.setText("Coming Soon");
-            Picasso.with(mContext)
-                    .load(((Businesse)dataItem).getLogo())
-                    .resize(75,75)
-                    .centerInside()
-                    .placeholder(R.drawable.placeholder)
-                    .error(R.drawable.no_image_available)
-                    .into(((EventViewHolder) holder).imageView_business_image);
+            if (((DataSnapshot) dataItem).hasChild("name")){
+                ((EventViewHolder) holder).textView_business_name.setText(((DataSnapshot) dataItem).child("name").getValue().toString());
+            }else{
+                ((EventViewHolder) holder).textView_business_name.setText("No Name");
+            }
+            settAddress(((EventViewHolder) holder),((DataSnapshot) dataItem));
+            getRatingAndReview(((DataSnapshot) dataItem).getKey(),((EventViewHolder) holder));
         }else{
             ((ProgressViewHolder)holder).progressBar.setIndeterminate(true);
         }
@@ -201,6 +205,74 @@ public class CategoryListAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
         view.startAnimation(anim);
     }
 
+    private void settAddress(EventViewHolder holder,DataSnapshot child){
+        String finalAddress = "",road = "",sigle="",city = "",state="",district="",country="",municipality="";
+        if (child.hasChild("road")){
+            road = child.child("road").getValue().toString();
+        }if(child.hasChild("Municipality")){
+            municipality = child.child("Municipality").getValue().toString();
+        }if (child.hasChild("sigle")){
+            sigle = child.child("sigle").getValue().toString();
+        }if (child.hasChild("city")){
+            city = child.child("city").getValue().toString();
+        }if (child.hasChild("state")){
+            state = child.child("state").getValue().toString();
+        }if (child.hasChild("district")){
+            district = child.child("district").getValue().toString();
+        }if (child.hasChild("country")){
+            country = child.child("country").getValue().toString();
+        }if(city.toString().equals(state.toString().trim()) || state.toString().equals(city.toString().trim())){
+            finalAddress = road + " " + municipality + " " + sigle + " " + district + " " + state + " " + country + " " + finalAddress;
+        }
+        else{
+            finalAddress = road + " " + municipality + " " + sigle + " " + district + " " + city + " " + state + " " + country + " " + finalAddress;
+        }
+
+
+        ((EventViewHolder) holder).textView_business_address.setText(finalAddress);
+    }
+
+    private void getRatingAndReview(String key, final EventViewHolder holder){
+        Log.e("BUSINESS KEY=="," " + key);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        com.google.firebase.database.Query wr = mDatabase.child("reviews").orderByChild("business").equalTo(key);
+
+        final ArrayList<DataSnapshot> dataSnapshots = new ArrayList<>();
+        RxFirebaseDatabase.observeSingleValueEvent(wr)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<DataSnapshot>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(com.google.firebase.database.DataSnapshot dataSnapshot) {
+//                            Log.e("User key", child.getKey());
+//                            Log.e("User ref", child.getRef().toString());
+//                            Log.e("REVIEW val", dataSnapshot.getValue().toString());
+                        long avg_review = 0;
+                        for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()) {
+                            if (dataSnapshot1.hasChild("rate")){
+                                avg_review += (long) dataSnapshot1.child("rate").getValue();
+                            }
+                        }
+
+                        float f = (float)avg_review;
+                        f = f/dataSnapshot.getChildrenCount();
+                        ((EventViewHolder)holder).ratingView.setRating(f);
+                        ((EventViewHolder)holder).textView_business_review.setText("(" + dataSnapshot.getChildrenCount() + ")");
+                    }
+                });
+    }
+
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -212,38 +284,11 @@ public class CategoryListAdapter<T> extends RecyclerView.Adapter<RecyclerView.Vi
           @Bind(R.id.id_card_business_address)
           TextView textView_business_address;
           @Nullable
-          @Bind(R.id.id_card_business_image)
-          ImageView imageView_business_image;
-          @Nullable
-          @Bind(R.id.id_card_business_title_key)
-          TextView textView_business_title_key;
-          @Nullable
-          @Bind(R.id.id_card_business_title_value)
-          TextView textView_business_title_value;
-          @Nullable
-          @Bind(R.id.id_card_business_menu_key)
-          TextView textView_business_menu_key;
-          @Nullable
-          @Bind(R.id.id_card_business_menu_value)
-          TextView textView_business_menu_value;
-          @Nullable
-          @Bind(R.id.id_card_business_offer_image)
-          ImageView imageView_business_offer_image;
-          @Nullable
-          @Bind(R.id.id_card_business_offer_key)
-          TextView textView_business_offer_key;
-          @Nullable
-          @Bind(R.id.id_card_business_offer_value)
-          TextView textView_business_offer_value;
-          @Nullable
           @Bind(R.id.id_card_business_rating)
           AppCompatRatingBar ratingView;
           @Nullable
           @Bind(R.id.id_card_business_review)
           TextView textView_business_review;
-          @Nullable
-          @Bind(R.id.id_card_business_text_open)
-          TextView textView_business_text_open;
         public EventViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

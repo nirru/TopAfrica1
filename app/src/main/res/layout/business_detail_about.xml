@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
@@ -13,13 +16,60 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/banner"
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/imageSize"
-                    android:src="@drawable/ic_coffie"
-                    android:scaleType="fitXY"
-                    android:layout_marginBottom="?attr/actionBarSize"/>
+                    android:layout_marginBottom="?attr/actionBarSize">
+
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fitsSystemWindows="true"
+                        tools:listitem="@layout/pager_item" />
+
+                    <RelativeLayout
+                        android:id="@+id/viewPagerIndicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center">
+
+                        <LinearLayout
+                            android:id="@+id/viewPagerCountDots"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:orientation="horizontal" />
+
+                        <ImageButton
+                            android:id="@+id/btn_next"
+                            android:layout_width="42dip"
+                            android:layout_height="42dip"
+                            android:visibility="gone"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="15dip"
+                            android:background="@drawable/btn_round_semitransperant"
+                            android:src="@drawable/quantum_ic_play_arrow_white_24" />
+
+                        <ImageButton
+                            android:id="@+id/btn_finish"
+                            android:layout_width="42dip"
+                            android:layout_height="42dip"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="15dip"
+                            android:background="@drawable/btn_round_semitransperant"
+                            android:contentDescription="Let's start"
+                            android:src="@drawable/ic_navigation_check"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
+                </RelativeLayout>
+
 
                 <ImageView
                     android:layout_width="@dimen/imagelogoSize"
@@ -37,11 +87,16 @@
                     android:padding="@dimen/padding_10"
                     android:gravity="center_vertical"
                     android:layout_toEndOf="@+id/image_logo">
-                    <RatingBar
+                    <android.support.v7.widget.AppCompatRatingBar
+                        android:id="@+id/ratingBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/AppTheme.RatingBar"
-                        android:id="@+id/ratingBar" />
+                        android:rating="3"
+                        android:stepSize="0.02"
+                        android:numStars="5"
+                        android:layout_marginTop="5dp"
+                        style="@style/AppTheme.RatingBar"/>
+
                     <TextView
                         android:id="@+id/reviews"
                         android:layout_width="wrap_content"
@@ -64,8 +119,11 @@
                 </RelativeLayout>
             </RelativeLayout>
             <TextView
+                android:id="@id/id_card_business_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="3"
                 android:textSize="@dimen/text_small"
                 android:padding="@dimen/activity_horizontal_margin"
                 android:textColor="@color/black"
@@ -84,6 +142,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
+                        android:ellipsize="end"
+                        android:maxLines="5"
                         android:textSize="@dimen/text_small"
                         android:text="dfs sjdfgj fjdgs fdjskj fjdsjk fdshndsn sdh dfs sjdfgj fjdgs fdjskj fjdsjk fdshndsn sdhjf dfs sjdfgj fjdgs"
                         android:drawableLeft="@drawable/ic_loc"
@@ -161,6 +221,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <ImageView
+                            android:id="@id/id_card_business_route"
                             android:layout_width="0dp"
                             android:layout_weight="0.5"
                             android:layout_height="@dimen/image_view_height"
@@ -168,6 +229,7 @@
                             android:scaleType="centerInside"
                             android:background="@color/light_yellow"/>
                         <ImageView
+                            android:id="@id/id_card_business_text_telephone"
                             android:layout_width="0dp"
                             android:layout_weight="0.5"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -210,6 +272,7 @@
                             android:scaleType="centerInside"
                             android:background="@color/light_yellow"/>
                         <ImageView
+                            android:id="@id/id_card_business_text_website"
                             android:layout_width="0dp"
                             android:layout_weight="0.5"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -232,6 +295,7 @@
                             android:scaleType="centerInside"
                             android:background="@color/light_yellow"/>
                         <ImageView
+                            android:id="@id/id_favourite_share"
                             android:layout_width="0dp"
                             android:layout_weight="0.5"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -265,96 +329,7 @@
                     android:text="We provide the world's most inviting stores, friendliest staff..."/>
 
             </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:weightSum="4"
-                android:orientation="vertical">
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray_500"/>
-                <RelativeLayout
-                    android:id="@+id/tab_about"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="About"
-                        android:textSize="@dimen/textsize_header"
-                        android:textColor="@color/black"
-                        android:layout_centerInParent="true"/>
-                    <View
-                        android:id="@+id/about_under"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:background="@color/colorPrimary"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/tab_map"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Map"
-                        android:textSize="@dimen/textsize_header"
-                        android:textColor="@color/gray_500"
-                        android:layout_centerInParent="true"/>
-                    <View
-                        android:id="@+id/map_under"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:visibility="gone"
-                        android:background="@color/colorPrimary"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/tab_hours"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hours"
-                        android:textColor="@color/gray_500"
-                        android:textSize="@dimen/textsize_header"
-                        android:layout_centerInParent="true"/>
-                    <View
-                        android:id="@+id/hrs_under"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:visibility="gone"
-                        android:background="@color/colorPrimary"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/tab_rate"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-                    <View
-                        android:id="@+id/rate_under"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:visibility="gone"
-                        android:background="@color/colorPrimary"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Rate"
-                        android:textSize="@dimen/textsize_header"
-                        android:textColor="@color/gray_500"
-                        android:layout_centerInParent="true"/>
-                </RelativeLayout>
-            </LinearLayout>
-
-
-
         </LinearLayout>
-        
+
     </ScrollView>
 </LinearLayout>

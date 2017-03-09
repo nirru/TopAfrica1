@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +26,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.africa.annauiare.ObjectSetter;
+import com.africa.annauiare.adapter.AfricaPagerAdapter;
+import com.africa.annauiare.adapter.CategoryListAdapter;
 import com.firebase.client.Firebase;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -69,91 +73,51 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class DetailActivity extends BaseDrawerActivity {
-
     @Nullable
-    @Bind(R.id.id_favourite_image)
-    ImageView img_favourite;
-
-    @Nullable
-    @Bind(R.id.id_card_business_route)
-    ImageView img_route;
+    @Bind(R.id.image_logo)
+    ImageView img_logo;
 
     @Nullable
     @Bind(R.id.id_image_bus_logo_camera)
     ImageView img_business_logo;
 
     @Nullable
-    @Bind(R.id.id_card_business_name)
-    TextView img_business_name;
+    @Bind(R.id.id_card_business_description)
+    TextView text_busiiness_desc;
 
     @Nullable
-    @Bind(R.id.id_card_business_category)
-    TextView text_business_category;
+    @Bind(R.id.text_loc)
+    TextView text_business_address;
 
     @Nullable
-    @Bind(R.id.id_address)
-    TextView business_address;
+    @Bind(R.id.text_fax)
+    TextView text_fax;
 
     @Nullable
-    @Bind(R.id.id_card_business_rating)
+    @Bind(R.id.ratingBar)
     AppCompatRatingBar rating_bar;
 
     @Nullable
-    @Bind(R.id.id_card_business_review)
+    @Bind(R.id.reviews)
     TextView business_review;
 
     @Nullable
-    @Bind(R.id.id_card_business_text_telephone)
-    TextView business_telephone;
+    @Bind(R.id.pager)
+    ViewPager pager;
 
     @Nullable
-    @Bind(R.id.id_card_business_text_email)
-    TextView business_email;
-
-    @Nullable
-    @Bind(R.id.id_card_business_description)
-    TextView business_description;
-
-    @Nullable
-    @Bind(R.id.id_card_business_text_website)
-    TextView business_website;
-
-    @Nullable
-    @Bind(R.id.id_detail_rel_4)
-    RelativeLayout facebook_relative;
-
-    @Nullable
-    @Bind(R.id.id_detail_rel_5)
-    RelativeLayout twitter_relative;
-
-    @Nullable
-    @Bind(R.id.id_detail_rel_6)
-    RelativeLayout google_relative;
-
-    @Nullable
-    @Bind(R.id.id_detail_rel_8)
-    LinearLayout linear_description;
+    @Bind(R.id.viewPagerCountDots)
+    LinearLayout pager_indicator;
 
 
     @Nullable
     @Bind(R.id.mapview)
     MapView mapView;
 
-    @Nullable
-    @Bind(R.id.login_form)
-    RelativeLayout login_form;
 
-    @Nullable
-    @Bind(R.id.login_progress)
-    View mProgressView;
-
-    @Nullable
-    @Bind(R.id.id_recyleview_category)
-    RecyclerView recyclerView;
 
     private boolean mapsSupported = true;
     private GoogleMap mMap;
-    private String key;
     Businesse businesse;
     ImageListAdapter imageListAdapter;
     public static List<MyImage> ITEMS ;
@@ -163,6 +127,10 @@ public class DetailActivity extends BaseDrawerActivity {
     Firebase remove_favourite;
     DatabaseReference remove_database_favourite;
     MarkerOptions markerOptions;
+    AfricaPagerAdapter mAdapter;
+    private int dotsCount;
+    private ImageView[] dots;
+    private DataSnapshot dataSnapshot;
 
     @Override
     public void onStart() {
@@ -207,7 +175,7 @@ public class DetailActivity extends BaseDrawerActivity {
             markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.pin)).draggable(true);
             sourceLatitude = location.getLatitude();
             sourceLongitude = location.getLongitude();
-//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15.5f));
+//          mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15.5f));
         }
     }
 
@@ -217,8 +185,9 @@ public class DetailActivity extends BaseDrawerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (checkPlayServices())
-         buildGoogleApiClient();
+            buildGoogleApiClient();
         setContentView(R.layout.activity_detail);
+        dataSnapshot = ObjectSetter.getInstance().getDataSnapshot();
         try {
             MapsInitializer.initialize(DetailActivity.this);
             if (mapView != null) {
@@ -228,35 +197,23 @@ public class DetailActivity extends BaseDrawerActivity {
         } catch (Exception e) {
             mapsSupported = false;
         }
-
-        initInstance();
-        initReclyleList();
-        if (getIntent()!=null){
-            key = getIntent().getStringExtra(AppConstant.FIREBASE_KEY);
-            showProgress(true);
-            getObjectByKey(key,savedInstanceState);
-            getReviewByKey(key);
-            getFaviouriteByKey(key);
+        if (getIvLogo()!=null){
+            if (dataSnapshot.hasChild("name")){
+                getIvLogo().setText(dataSnapshot.child("name").getValue().toString());
+            }
         }
 
+        setUpPager();
+        setLogo();
+        setDescription();
+        settAddress(dataSnapshot);
+        setFax();
+//      getReviewByKey(key);
+//      getFaviouriteByKey(key);
+
     }
 
-    private void initInstance(){
-        ITEMS = new ArrayList<MyImage>();
-        imageListAdapter = new ImageListAdapter(ITEMS,DetailActivity.this);
-        imageListAdapter.setOnItemClickListener(new ImageListAdapter.MyClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                Log.e("URL==", "" + ITEMS.get(position).getImage_url());
-            }
-        });
-    }
 
-    private void initReclyleList(){
-        //add ItemDecoration
-        recyclerView.setLayoutManager(new LinearLayoutManager(DetailActivity.this,LinearLayoutManager.HORIZONTAL,false));
-        recyclerView.setAdapter(imageListAdapter);
-    }
 
     private void initializeMap() {
         if (mMap == null && mapsSupported) {
@@ -296,39 +253,6 @@ public class DetailActivity extends BaseDrawerActivity {
                 });
     }
 
-    private void getObjectByKey(final String key,final Bundle savedInstanceState){
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        com.google.firebase.database.Query wr = mDatabase.child("businesses").orderByKey().equalTo(key);
-        RxFirebaseDatabase.observeSingleValueEvent(wr)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<DataSnapshot>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(DataSnapshot dataSnapshot) {
-                        showProgress(false);
-                        businesse = dataSnapshot.child(key).getValue(Businesse.class);
-                        initStretView(savedInstanceState);
-                        checkSocialURL();
-                        for (int i = 0 ; i < businesse.getPictures().size() ; i++){
-                            MyImage image = new MyImage();
-                            image.setImage_url(businesse.getPictures().get(i).toString());
-                            imageListAdapter.addItem(image);
-                        }
-
-                        setBusinesDetail();
-                    }
-                });
-    }
 
     private void getReviewByKey(final String key){
         ITEM_REVIEW = new ArrayList<>();
@@ -378,97 +302,118 @@ public class DetailActivity extends BaseDrawerActivity {
     }
 
 
-    private void getFaviouriteByKey(final String key){
-        ITEM_REVIEW = new ArrayList<>();
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        com.google.firebase.database.Query wr = mDatabase.child("favourite").orderByChild("business").equalTo(key);
-        RxFirebaseDatabase.observeSingleValueEvent(wr)
-               .map(new Func1<DataSnapshot, Faviourite>() {
-                   @Override
-                   public Faviourite call(DataSnapshot dataSnapshot) {
-                       Faviourite faviourite=null;
-                       DataSnapshot my_Children = null;
-                       for (DataSnapshot child: dataSnapshot.getChildren()) {
-//                            Log.e("User key", child.getKey());
-//                            Log.e("User ref", child.getRef().toString());
-//                            Log.e("User val", child.getValue().toString());
-                           faviourite = child.getValue(Faviourite.class);
-                           if (faviourite.getUid().equals(firebaseUser.getUid())){
-                               my_Children = child;
-                               break;
-                           }
-                       }
-                       remove_database_favourite = my_Children.getRef();
-                       return faviourite;
-                   }
-               })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Faviourite>() {
-                    @Override
-                    public void onCompleted() {
+//    private void getFaviouriteByKey(final String key){
+//        ITEM_REVIEW = new ArrayList<>();
+//        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+//        com.google.firebase.database.Query wr = mDatabase.child("favourite").orderByChild("business").equalTo(key);
+//        RxFirebaseDatabase.observeSingleValueEvent(wr)
+//               .map(new Func1<DataSnapshot, Faviourite>() {
+//                   @Override
+//                   public Faviourite call(DataSnapshot dataSnapshot) {
+//                       Faviourite faviourite=null;
+//                       DataSnapshot my_Children = null;
+//                       for (DataSnapshot child: dataSnapshot.getChildren()) {
+////                            Log.e("User key", child.getKey());
+////                            Log.e("User ref", child.getRef().toString());
+////                            Log.e("User val", child.getValue().toString());
+//                           faviourite = child.getValue(Faviourite.class);
+//                           if (faviourite.getUid().equals(firebaseUser.getUid())){
+//                               my_Children = child;
+//                               break;
+//                           }
+//                       }
+//                       remove_database_favourite = my_Children.getRef();
+//                       return faviourite;
+//                   }
+//               })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<Faviourite>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(Faviourite faviourite) {
+//                        if (faviourite!=null){
+//                            img_favourite.setImageResource(R.drawable.heart_fill);
+//                            isFavourite = true;
+//                        }else{
+//                            img_favourite.setImageResource(R.drawable.heart_blank);
+//                            isFavourite = false;
+//                        }
+//                    }
+//                });
+//    }
 
-                    }
+   private void setLogo(){
+       if (dataSnapshot.hasChild("logo")){
+           if (!dataSnapshot.child("logo").getValue().toString().equals("")){
+               Picasso.with(DetailActivity.this)
+                       .load(dataSnapshot.child("logo").getValue().toString())
+                       .fit()
+                       .centerCrop()
+                       .error(R.drawable.no_image_available)
+                       .into(img_logo);
+           }
+       }
+   }
 
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Faviourite faviourite) {
-                        if (faviourite!=null){
-                            img_favourite.setImageResource(R.drawable.heart_fill);
-                            isFavourite = true;
-                        }else{
-                            img_favourite.setImageResource(R.drawable.heart_blank);
-                            isFavourite = false;
-                        }
-                    }
-                });
-    }
-
-    private void setBusinesDetail(){
-        try {
-            if (!businesse.getLogo().equals("") && businesse.getLogo()!=null){
-                Picasso.with(DetailActivity.this)
-                        .load(businesse.getLogo())
-                        .resize(100,100)
-                        .centerInside()
-                        .placeholder(R.drawable.placeholder)
-                        .error(R.drawable.no_image_available)
-                        .into(img_business_logo);
-                img_business_name.setText(businesse.getName());
-                text_business_category.setText(businesse.getCategory());
-                if (businesse.getOfficeLocation()!=null && !businesse.getOfficeLocation().equals("")){
-                    String[] geoArray = businesse.getOfficeLocation().trim().split(",");
-                    destinationLatitude = Double.valueOf(geoArray[0]);
-                    destinationLongitude = Double.valueOf(geoArray[1]);
-                    getStringAdress(destinationLatitude,destinationLongitude);
-                    displayLocationOnDragerEnd(destinationLatitude,destinationLongitude);
-                }else{
-                    business_address.setText("No Address found");
-                }
-
-                business_telephone.setText(businesse.getPhoneNumber());
-                business_email.setText(businesse.getEmail());
-//                business_website.setClickable(true);
-//                business_website.setMovementMethod(LinkMovementMethod.getInstance());
-//                String text = String.format("<a href=\"%s\">\"%s\"</a> ", businesse.getWebsite(),businesse.getWebsite());
-//                business_website.setText(Html.fromHtml(text));
-                business_website.setText(businesse.getWebsite());
-            }
-            if (!businesse.getDescription().equals("") && businesse.getDescription()!=null){
-                linear_description.setVisibility(View.VISIBLE);
-                business_description.setText(businesse.getDescription());
-            }else{
-                linear_description.setVisibility(View.GONE);
-            }
-        }catch (Exception ex){
-            ex.printStackTrace();
+    private void settAddress( DataSnapshot child){
+        String finalAddress = "",road = "",sigle="",city = "",state="",district="",country="",municipality="";
+        if (child.hasChild("road")){
+            road = child.child("road").getValue().toString();
+        }if(child.hasChild("Municipality")){
+            municipality = child.child("Municipality").getValue().toString();
+        }if (child.hasChild("sigle")){
+            sigle = child.child("sigle").getValue().toString();
+        }if (child.hasChild("city")){
+            city = child.child("city").getValue().toString();
+        }if (child.hasChild("state")){
+            state = child.child("state").getValue().toString();
+        }if (child.hasChild("district")){
+            district = child.child("district").getValue().toString();
+        }if (child.hasChild("country")){
+            country = child.child("country").getValue().toString();
+        }if(city.toString().equals(state.toString().trim()) || state.toString().equals(city.toString().trim())){
+            finalAddress = road + " " + municipality + " " + sigle + " " + district + " " + state + " " + country + " " + finalAddress;
+        }
+        else{
+            finalAddress = road + " " + municipality + " " + sigle + " " + district + " " + city + " " + state + " " + country + " " + finalAddress;
         }
 
+
+        text_business_address.setText(finalAddress);
     }
+
+    private void setFax(){
+        String fax1 = "",finalFax = "";
+        if (dataSnapshot.hasChild("fax")){
+            fax1 = dataSnapshot.child("fax").getValue().toString();
+        }if(dataSnapshot.hasChild("fax2")){
+            fax1= fax1 + "\n" + dataSnapshot.child("fax2").getValue().toString();
+        }
+
+        if (!fax1.equals(""))
+        text_fax.setText(fax1);
+        else
+            text_fax.setText("No Fax found");
+    }
+
+    private void setDescription(){
+        if (dataSnapshot.hasChild("description")){
+            text_busiiness_desc.setText(dataSnapshot.child("description").getValue().toString());
+        }else{
+            text_busiiness_desc.setText("No Description Found");
+        }
+    }
+
 
     private void displayLocationOnDragerEnd(double latitude,double longitude) {
         try {
@@ -484,96 +429,45 @@ public class DetailActivity extends BaseDrawerActivity {
     }
 
 
-    private void getStringAdress(double lat, double lng){
-        FallbackReverseGeocodeObservable.createObservable(Locale.getDefault(),lat,lng,1)
-                .map(new Func1<List<Address>, Address>() {
-                    @Override
-                    public Address call(List<Address> addresses) {
-                        return addresses != null && !addresses.isEmpty() ? addresses.get(0) : null;
-                    }
-                })
-                .map(new AddressListFunc(lat,lng))
-                .subscribeOn(Schedulers.io())               // use I/O thread to query for addresses
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new DisplayAddressOnDetailPage(business_address),new ErrorHandler(DetailActivity.this));
-    }
+
     private void checkSocialURL(){
-        if (!businesse.getFacebookPage().toString().equals("") && businesse.getFacebookPage()!=null){
-            facebook_relative.setVisibility(View.VISIBLE);
-        }else{
-            facebook_relative.setVisibility(View.GONE);
-        }
-        if (!businesse.getTwitterPage().toString().equals("") && businesse.getTwitterPage()!=null){
-            twitter_relative.setVisibility(View.VISIBLE);
-        }else{
-            twitter_relative.setVisibility(View.GONE);
-        } if (!businesse.getTwitterPage().toString().equals("") && businesse.getTwitterPage()!=null){
-            google_relative.setVisibility(View.VISIBLE);
-        }else{
-            google_relative.setVisibility(View.GONE);
-        }
+//        if (!businesse.getFacebookPage().toString().equals("") && businesse.getFacebookPage()!=null){
+//            facebook_relative.setVisibility(View.VISIBLE);
+//        }else{
+//            facebook_relative.setVisibility(View.GONE);
+//        }
+//        if (!businesse.getTwitterPage().toString().equals("") && businesse.getTwitterPage()!=null){
+//            twitter_relative.setVisibility(View.VISIBLE);
+//        }else{
+//            twitter_relative.setVisibility(View.GONE);
+//        } if (!businesse.getTwitterPage().toString().equals("") && businesse.getTwitterPage()!=null){
+//            google_relative.setVisibility(View.VISIBLE);
+//        }else{
+//            google_relative.setVisibility(View.GONE);
+//        }
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public  void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        try{
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-                int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-                login_form.setVisibility(show ? View.GONE : View.VISIBLE);
-                login_form.animate().setDuration(shortAnimTime).alpha(
-                        show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        login_form.setVisibility(show ? View.GONE : View.VISIBLE);
-                    }
-                });
-
-                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                mProgressView.animate().setDuration(shortAnimTime).alpha(
-                        show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                    }
-                });
-            } else {
-                // The ViewPropertyAnimator APIs are not available, so simply show
-                // and hide the relevant UI components.
-                login_form.setVisibility(show ? View.VISIBLE : View.GONE);
-                login_form.setVisibility(show ? View.GONE : View.VISIBLE);
-            }
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
 
     @OnClick(R.id.id_card_business_route)
     public void navigateToBusinessLocation(View v){
         startNavigation();
     }
 
-    @OnClick(R.id.id_favourite_image)
-    public void favouriteSelection(View v){
-        if (!isFavourite){
-            isFavourite = true;
-            img_favourite.setImageResource(R.drawable.heart_fill);
-            img_favourite.setEnabled(false);
-            setBusinessAsFaviourite();
-        }else{
-            isFavourite = false;
-            img_favourite.setImageResource(R.drawable.heart_blank);
-            img_favourite.setEnabled(false);
-            removeBusinessAsFaviourite();
-        }
-    }
+//    @OnClick(R.id.id_favourite_image)
+//    public void favouriteSelection(View v){
+//        if (!isFavourite){
+//            isFavourite = true;
+//            img_favourite.setImageResource(R.drawable.heart_fill);
+//            img_favourite.setEnabled(false);
+//            setBusinessAsFaviourite();
+//        }else{
+//            isFavourite = false;
+//            img_favourite.setImageResource(R.drawable.heart_blank);
+//            img_favourite.setEnabled(false);
+//            removeBusinessAsFaviourite();
+//        }
+//    }
 
     @OnClick(R.id.id_favourite_share)
     public void shareBusiness(View v){
@@ -583,7 +477,31 @@ public class DetailActivity extends BaseDrawerActivity {
 
     @OnClick(R.id.id_card_business_text_telephone)
     public void callBusinessNumber(View v){
-        AppController.getInstance().dialNumber(business_telephone.getText().toString().trim(),DetailActivity.this);
+        String phone;
+        if (!dataSnapshot.hasChild("phoneNumber") && !dataSnapshot.hasChild("phoneNumber2")){
+            Toast.makeText(DetailActivity.this,"Sorry no number found",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (dataSnapshot.hasChild("phoneNumber")){
+            phone = dataSnapshot.child("phoneNumber").getValue().toString();
+            AppController.getInstance().dialNumber(phone,DetailActivity.this);
+            return;
+        }
+        if (dataSnapshot.hasChild("phoneNumber2")){
+            phone = dataSnapshot.child("phoneNumber2").getValue().toString();
+            AppController.getInstance().dialNumber(phone,DetailActivity.this);
+            return;
+        }
+    }
+
+    @OnClick(R.id.btn_next)
+    public void nextButtonClk(View v){
+        pager.setCurrentItem((pager.getCurrentItem() < dotsCount)
+                ? pager.getCurrentItem() + 1 : 0);
+    }
+
+    @OnClick(R.id.btn_finish)
+    public void finishBtn(View v){
     }
 
     @Override
@@ -594,62 +512,77 @@ public class DetailActivity extends BaseDrawerActivity {
         if (PermissionUtils.isPermissionGranted(permissions, grantResults,
                 Manifest.permission.CALL_PHONE)) {
             // Enable the my location layer if the permission has been granted.
-           AppController.getInstance().dialNumber(business_telephone.getText().toString().trim(),DetailActivity.this);
+            String phone;
+            if (dataSnapshot.hasChild("phoneNumber")){
+                phone = dataSnapshot.child("phoneNumber").getValue().toString();
+                AppController.getInstance().dialNumber(phone,DetailActivity.this);
+                return;
+            }
+            if (dataSnapshot.hasChild("phoneNumber2")){
+                phone = dataSnapshot.child("phoneNumber2").getValue().toString();
+                AppController.getInstance().dialNumber(phone,DetailActivity.this);
+                return;
+            }
         } else {
             // Display the missing permission error dialog when the fragments resume.
             if (ActivityCompat.shouldShowRequestPermissionRationale(DetailActivity.this,
                     Manifest.permission.CALL_PHONE)) {
-                AppController.getInstance().confirmationDialog(DetailActivity.this
-                        ,getString(R.string.confirmation_title)
-                        ,img_business_name.getText().toString()
-                        ,business_telephone.getText().toString());
+                if (dataSnapshot.hasChild("name") && dataSnapshot.hasChild("phoneNumber")){
+                    AppController.getInstance().confirmationDialog(DetailActivity.this
+                            ,getString(R.string.confirmation_title)
+                            ,dataSnapshot.child("name").getValue().toString()
+                            ,dataSnapshot.child("phoneNumber").getValue().toString());
+
+                }else{
+                    Toast.makeText(DetailActivity.this,"Sorry no name and number is found",Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
 
-    private void setBusinessAsFaviourite(){
-        Firebase ref =  new Firebase(AppConstant.FIREBASE_DATABSE_REFRENCE_URL+"favourite");
-        Faviourite faviourite = new Faviourite();
-        faviourite.setBusiness(key);
-        faviourite.setUid(firebaseUser.getUid());
-        faviourite.setFavourite(true);
-        RxFirebaseDatabase.pushValue(ref,faviourite)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Firebase>() {
-                    @Override
-                    public void onCompleted() {
+//    private void setBusinessAsFaviourite(){
+//        Firebase ref =  new Firebase(AppConstant.FIREBASE_DATABSE_REFRENCE_URL+"favourite");
+//        Faviourite faviourite = new Faviourite();
+//        faviourite.setBusiness(key);
+//        faviourite.setUid(firebaseUser.getUid());
+//        faviourite.setFavourite(true);
+//        RxFirebaseDatabase.pushValue(ref,faviourite)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<Firebase>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    @Override
+//                    public void onNext(Firebase firebase) {
+//                        remove_favourite = firebase;
+//                        img_favourite.setImageResource(R.drawable.heart_fill);
+//                        img_favourite.setEnabled(true);
+//                    }
+//                });
+//    }
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(Firebase firebase) {
-                        remove_favourite = firebase;
-                        img_favourite.setImageResource(R.drawable.heart_fill);
-                        img_favourite.setEnabled(true);
-                    }
-                });
-    }
-
-    private void removeBusinessAsFaviourite(){
-        if (remove_favourite!=null){
-            img_favourite.setImageResource(R.drawable.heart_blank);
-            remove_favourite.removeValue();
-            img_favourite.setEnabled(true);
-        }
-        if (remove_database_favourite!=null){
-            img_favourite.setImageResource(R.drawable.heart_blank);
-            remove_database_favourite.removeValue();
-            img_favourite.setEnabled(true);
-        }
-
-
-    }
+    //    private void removeBusinessAsFaviourite(){
+//        if (remove_favourite!=null){
+//            img_favourite.setImageResource(R.drawable.heart_blank);
+//            remove_favourite.removeValue();
+//            img_favourite.setEnabled(true);
+//        }
+//        if (remove_database_favourite!=null){
+//            img_favourite.setImageResource(R.drawable.heart_blank);
+//            remove_database_favourite.removeValue();
+//            img_favourite.setEnabled(true);
+//        }
+//
+//
+//    }
     private void startNavigation(){
         String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?saddr=%f,%f(%s)&daddr=%f,%f (%s)", sourceLatitude, sourceLongitude, "current location", destinationLatitude, destinationLongitude, businesse.getCity());
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
@@ -670,5 +603,61 @@ public class DetailActivity extends BaseDrawerActivity {
                 Toast.makeText(this, "Please install a maps application", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void setUpPager(){
+        DataSnapshot dataSnapshot = ObjectSetter.getInstance().getDataSnapshot();
+        if (!dataSnapshot.hasChild("pictures"))
+            return;
+        ArrayList<String> pictures = (ArrayList<String>) dataSnapshot.child("pictures").getValue();
+        if (!(pictures.size() >0))
+            return;
+        mAdapter = new AfricaPagerAdapter(DetailActivity.this,  pictures.toArray(new String[0]));
+        pager.setAdapter(mAdapter);
+        pager.setCurrentItem(0);
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                for (int i = 0; i < dotsCount; i++) {
+                    dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem_dot));
+                }
+
+                dots[position].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem_dot));
+
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        setUiPageViewController();
+    }
+
+    private void setUiPageViewController() {
+        dotsCount = mAdapter.getCount();
+        dots = new ImageView[dotsCount];
+
+        for (int i = 0; i < dotsCount; i++) {
+            dots[i] = new ImageView(this);
+            dots[i].setImageDrawable(getResources().getDrawable(R.drawable.nonselecteditem_dot));
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+
+            params.setMargins(4, 0, 4, 0);
+
+            pager_indicator.addView(dots[i], params);
+        }
+
+        dots[0].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem_dot));
     }
 }

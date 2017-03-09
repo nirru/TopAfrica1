@@ -843,13 +843,13 @@ public class EditBusiness extends BaseDrawerActivity implements GoogleMap.OnMark
 
     private Day openTime(Day _day,String day,int hr,int min, int second){
         _day.setDay(day);
-        _day.setOpenAt(Utils.getTimeInMilli(hr,min,second));
+//        _day.setOpenAt(Utils.getTimeInMilli(hr,min,second));
         return _day;
     }
 
     private Day closeTime(Day _day,String day,int hr,int min, int second){
         _day.setDay(day);
-        _day.setCloseAt(Utils.getTimeInMilli(hr,min,second));
+//        _day.setCloseAt(Utils.getTimeInMilli(hr,min,second));
         return _day;
     }
 
@@ -1666,8 +1666,8 @@ public class EditBusiness extends BaseDrawerActivity implements GoogleMap.OnMark
             pictures.add(picture_url);
             pictures.add(picture_url_2);
             pictures.add(picture_url_3);
-            _annotation.setLatitude(0.0);
-            _annotation.setLongitude(0.0);
+//            _annotation.setLatitude(0.0);
+//            _annotation.setLongitude(0.0);
             _annotation.setTitle("Title" + 1);
             TIMELIST.add(new Day());
             TIMELIST.add(new Day());
@@ -1685,9 +1685,9 @@ public class EditBusiness extends BaseDrawerActivity implements GoogleMap.OnMark
             TIMELIST.add(new Day());
             Openhours openhours = new Openhours();
             openhours.setDays(TIMELIST);
-            openhours.setZone(1);
+//            openhours.setZone(1);
             businesse.setNumberEmployes(number_of_employee);
-            businesse.setCategory("");
+//            businesse.setCategory("");
             businesse.setCity("");
             businesse.setCountry("");
             businesse.setDescription(text_business_description.getText().toString() != null ? text_business_description.getText().toString() : "");
@@ -1698,22 +1698,22 @@ public class EditBusiness extends BaseDrawerActivity implements GoogleMap.OnMark
             mapdata.setAnnotations(annonationList);
             businesse.setMapdata(mapdata);
             businesse.setName(text_business_name.getText().toString());
-            businesse.setNeighbour_hood("");
+//            businesse.setNeighbour_hood("");
             businesse.setOfficeLocation(0.0 + "," + 0.0);
             businesse.setOpenhours(openhours);
-            businesse.setPhoneNumber(text_business_phone.getText().toString());
-            businesse.setFaxnumber(text_business_fax.getText().toString());
-            businesse.setAlternatefaxnumber(text_business_fax_2.getText().toString());
-            businesse.setPictures(pictures);
-            businesse.setRoad("");
+//            businesse.setPhoneNumber(text_business_phone.getText().toString());
+//            businesse.setFaxnumber(text_business_fax.getText().toString());
+//            businesse.setAlternatefaxnumber(text_business_fax_2.getText().toString());
+//            businesse.setPictures(pictures);
+//            businesse.setRoad(2.0);
             businesse.setState("");
-            businesse.setDistrict("");
-            businesse.setSuburb("");
-            businesse.setuid(firebaseUser.getUid());
+//            businesse.setDistrict("");
+//            businesse.setSuburb("");
+//            businesse.setuid(firebaseUser.getUid());
             businesse.setWebsite(text_business_type.getText().toString());
-            businesse.setFacebookPage("");
-            businesse.setTwitterPage("");
-            businesse.setGooglePage("");
+//            businesse.setFacebookPage("");
+//            businesse.setTwitterPage("");
+//            businesse.setGooglePage("");
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -1732,8 +1732,8 @@ public class EditBusiness extends BaseDrawerActivity implements GoogleMap.OnMark
             pictures.add(picture_url);
             pictures.add(picture_url_2);
             pictures.add(picture_url_3);
-            _annotation.setLatitude(0.0);
-            _annotation.setLongitude(0.0);
+//            _annotation.setLatitude(0.0);
+//            _annotation.setLongitude(0.0);
             _annotation.setTitle("Title" + 1);
             annonationList.add(_annotation);
             mapdata.setAnnotations(annonationList);
@@ -1753,7 +1753,7 @@ public class EditBusiness extends BaseDrawerActivity implements GoogleMap.OnMark
             TIMELIST.add(new Day());
             Openhours openhours = new Openhours();
             openhours.setDays(TIMELIST);
-            openhours.setZone(1);
+//            openhours.setZone(1);
             map.put("Number_employes",number_of_employee);
             map.put("category",category);
             map.put("email",text_business_email.getText().toString());
@@ -1799,8 +1799,8 @@ public class EditBusiness extends BaseDrawerActivity implements GoogleMap.OnMark
             pictures.add(picture_url);
             pictures.add(picture_url_2);
             pictures.add(picture_url_3);
-            _annotation.setLatitude(lat_double);
-            _annotation.setLongitude(lng_double);
+//            _annotation.setLatitude(lat_double);
+//            _annotation.setLongitude(lng_double);
             _annotation.setTitle("Title" + 1);
             annonationList.add(_annotation);
             mapdata.setAnnotations(annonationList);
@@ -1820,7 +1820,7 @@ public class EditBusiness extends BaseDrawerActivity implements GoogleMap.OnMark
             TIMELIST.add(new Day());
             Openhours openhours = new Openhours();
             openhours.setDays(TIMELIST);
-            openhours.setZone(1);
+//            openhours.setZone(1);
             map.put("Number_employes",number_of_employee);
             map.put("category",category);
             map.put("email",text_business_email.getText().toString());
@@ -1865,8 +1865,8 @@ public class EditBusiness extends BaseDrawerActivity implements GoogleMap.OnMark
             pictures.add(picture_url);
             pictures.add(picture_url_2);
             pictures.add(picture_url_3);
-            _annotation.setLatitude(lat_double);
-            _annotation.setLongitude(lng_double);
+//            _annotation.setLatitude(lat_double);
+//            _annotation.setLongitude(lng_double);
             _annotation.setTitle("Title" + 1);
             annonationList.add(_annotation);
             mapdata.setAnnotations(annonationList);
@@ -1886,7 +1886,7 @@ public class EditBusiness extends BaseDrawerActivity implements GoogleMap.OnMark
             TIMELIST.add(_daySundayEvening);
             Openhours openhours = new Openhours();
             openhours.setDays(TIMELIST);
-            openhours.setZone(1);
+//            openhours.setZone(1);
             map.put("Number_employes",number_of_employee);
             map.put("category",category);
             map.put("email",text_business_email.getText().toString());
@@ -1931,8 +1931,8 @@ public class EditBusiness extends BaseDrawerActivity implements GoogleMap.OnMark
             ArrayList<Annotation> annonationList = new ArrayList<>();
             ArrayList<String> pictures = new ArrayList<>();
             pictures.add(picture_url);
-            _annotation.setLatitude(lat_double);
-            _annotation.setLongitude(lng_double);
+//            _annotation.setLatitude(lat_double);
+//            _annotation.setLongitude(lng_double);
             _annotation.setTitle("Title" + 1);
             TIMELIST.add(_dayMonday);
             TIMELIST.add(_dayTuesday);
@@ -1950,9 +1950,9 @@ public class EditBusiness extends BaseDrawerActivity implements GoogleMap.OnMark
             TIMELIST.add(_daySundayEvening);
             Openhours openhours = new Openhours();
             openhours.setDays(TIMELIST);
-            openhours.setZone(1);
+//            openhours.setZone(1);
             businesse.setNumberEmployes("50");
-            businesse.setCategory(category1);
+//            businesse.setCategory(category1);
             businesse.setCity(city.getText().toString());
             businesse.setDescription(text_business_description.getText().toString() != null ? text_business_description.getText().toString() : "");
             businesse.setCountry(country.getText().toString());
@@ -1964,13 +1964,13 @@ public class EditBusiness extends BaseDrawerActivity implements GoogleMap.OnMark
             businesse.setName(text_business_name.getText().toString());
             businesse.setOfficeLocation(cordinate.getText().toString());
             businesse.setOpenhours(openhours);
-            businesse.setPhoneNumber(text_business_phone.getText().toString());
-            businesse.setPictures(pictures);
-            businesse.setRoad(address.getText().toString());
+//            businesse.setPhoneNumber(text_business_phone.getText().toString());
+//            businesse.setPictures(pictures);
+//            businesse.setRoad(address.getText().toString());
             businesse.setState(city.getText().toString());
-            businesse.setDistrict(text_district.getText().toString());
-            businesse.setSuburb(city.getText().toString());
-            businesse.setuid(firebaseUser.getUid());
+//            businesse.setDistrict(text_district.getText().toString());
+//            businesse.setSuburb(city.getText().toString());
+//            businesse.setuid(firebaseUser.getUid());
             businesse.setWebsite(text_business_type.getText().toString());
         }catch (Exception ex){
             ex.printStackTrace();

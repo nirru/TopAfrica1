@@ -1,71 +1,103 @@
 package com.africa.annauiare.modal.category;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.google.firebase.database.IgnoreExtraProperties;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+        "Contact",
+        "HomePhone",
+        "HomePhone2",
+        "Municipality",
         "Number_employes",
-        "alternatefaxnumber",
+        "Status",
+        "author_id",
         "category",
         "city",
         "country",
+        "creation_date",
+        "departement",
         "description",
         "district",
         "email",
+        "email2",
         "facebookPage",
-        "faxnumber",
+        "fax",
+        "fax2",
         "googlePage",
+        "instagramPage",
+        "landmark",
+        "last_update_date",
         "listingtype",
         "logo",
         "mapdata",
         "name",
-        "neighbour_hood",
+        "neighborhood",
         "officeLocation",
         "openhours",
         "phoneNumber",
+        "phoneNumber2",
         "pictures",
+        "postalCode",
         "road",
-        "secondary_email",
+        "sigle",
         "state",
         "suburb",
         "twitterPage",
-        "uid",
-        "website"
+        "website",
+        "youtube"
 })
-@IgnoreExtraProperties
 public class Businesse {
+
+    @JsonProperty("Contact")
+    private List<String> contact = null;
+    @JsonProperty("HomePhone")
+    private Long homePhone;
+    @JsonProperty("HomePhone2")
+    private Long homePhone2;
+    @JsonProperty("Municipality")
+    private String municipality;
     @JsonProperty("Number_employes")
     private String numberEmployes;
-    @JsonProperty("alternatefaxnumber")
-    private String alternatefaxnumber;
+    @JsonProperty("Status")
+    private String status;
+    @JsonProperty("author_id")
+    private String authorId;
     @JsonProperty("category")
-    private String category;
+    private List<String> category = null;
     @JsonProperty("city")
     private String city;
     @JsonProperty("country")
     private String country;
+    @JsonProperty("creation_date")
+    private Long creationDate;
+    @JsonProperty("departement")
+    private String departement;
     @JsonProperty("description")
     private String description;
     @JsonProperty("district")
     private String district;
     @JsonProperty("email")
     private String email;
+    @JsonProperty("email2")
+    private String email2;
     @JsonProperty("facebookPage")
     private String facebookPage;
-    @JsonProperty("faxnumber")
-    private String faxnumber;
+    @JsonProperty("fax")
+    private String fax;
+    @JsonProperty("fax2")
+    private String fax2;
     @JsonProperty("googlePage")
     private String googlePage;
+    @JsonProperty("instagramPage")
+    private String instagramPage;
+    @JsonProperty("landmark")
+    private String landmark;
+    @JsonProperty("last_update_date")
+    private Long lastUpdateDate;
     @JsonProperty("listingtype")
     private String listingtype;
     @JsonProperty("logo")
@@ -74,599 +106,492 @@ public class Businesse {
     private Mapdata mapdata;
     @JsonProperty("name")
     private String name;
-    @JsonProperty("neighbour_hood")
-    private String neighbour_hood;
+    @JsonProperty("neighborhood")
+    private String neighborhood;
     @JsonProperty("officeLocation")
     private String officeLocation;
     @JsonProperty("openhours")
     private Openhours openhours;
     @JsonProperty("phoneNumber")
-    private String phoneNumber;
+    private Long phoneNumber;
+    @JsonProperty("phoneNumber2")
+    private Long phoneNumber2;
     @JsonProperty("pictures")
-    private List<String> pictures = new ArrayList<String>();
+    private List<String> pictures = null;
+    @JsonProperty("postalCode")
+    private String postalCode;
     @JsonProperty("road")
-    private String road;
-    @JsonProperty("secondary_email")
-    private String secondary_email;
+    private Long road;
+    @JsonProperty("sigle")
+    private String sigle;
     @JsonProperty("state")
     private String state;
     @JsonProperty("suburb")
     private String suburb;
     @JsonProperty("twitterPage")
     private String twitterPage;
-    @JsonProperty("uid")
-    private String uid;
     @JsonProperty("website")
     private String website;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private String key = "dfd";
+    @JsonProperty("youtube")
+    private String youtube;
 
-    public Businesse(){
-
+    
+   @JsonProperty("Contact")
+    public List<String> getContact() {
+        return contact;
     }
 
-    /**
-     *
-     * @return
-     * The numberEmployes
-     */
-    @JsonProperty("Number_employes")
+    
+   @JsonProperty("Contact")
+    public void setContact(List<String> contact) {
+        this.contact = contact;
+    }
+
+    
+   @JsonProperty("HomePhone")
+    public Long getHomePhone() {
+        return homePhone;
+    }
+
+    
+   @JsonProperty("HomePhone")
+    public void setHomePhone(Long homePhone) {
+        this.homePhone = homePhone;
+    }
+
+    
+   @JsonProperty("HomePhone2")
+    public Long getHomePhone2() {
+        return homePhone2;
+    }
+
+    
+   @JsonProperty("HomePhone2")
+    public void setHomePhone2(Long homePhone2) {
+        this.homePhone2 = homePhone2;
+    }
+
+    
+   @JsonProperty("Municipality")
+    public String getMunicipality() {
+        return municipality;
+    }
+
+    
+   @JsonProperty("Municipality")
+    public void setMunicipality(String municipality) {
+        this.municipality = municipality;
+    }
+
+    
+   @JsonProperty("Number_employes")
     public String getNumberEmployes() {
         return numberEmployes;
     }
 
-    /**
-     *
-     * @param numberEmployes
-     * The Number_employes
-     */
-    @JsonProperty("Number_employes")
+    
+   @JsonProperty("Number_employes")
     public void setNumberEmployes(String numberEmployes) {
         this.numberEmployes = numberEmployes;
     }
 
-    /**
-     *
-     * @return
-     * The alternatefaxnumber
-     */
-    @JsonProperty("alternatefaxnumber")
-    public String getAlternatefaxnumber() {
-        return alternatefaxnumber;
+    
+   @JsonProperty("Status")
+    public String getStatus() {
+        return status;
     }
 
-    /**
-     *
-     * @param alternateFaxNumber
-     * The alternatefaxnumber
-     */
-    @JsonProperty("alternatefaxnumber")
-    public void setAlternatefaxnumber(String alternateFaxNumber) {
-        this.alternatefaxnumber = alternateFaxNumber;
+    
+   @JsonProperty("Status")
+    public void setStatus(String status) {
+        this.status = status;
     }
 
+    
+   @JsonProperty("author_id")
+    public String getAuthorId() {
+        return authorId;
+    }
 
-    /**
-     *
-     * @return
-     * The category
-     */
-    @JsonProperty("category")
-    public String getCategory() {
+    
+   @JsonProperty("author_id")
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
+    }
+
+    
+   @JsonProperty("category")
+    public List<String> getCategory() {
         return category;
     }
 
-    /**
-     *
-     * @param category
-     * The category
-     */
-    @JsonProperty("category")
-    public void setCategory(String category) {
+    
+   @JsonProperty("category")
+    public void setCategory(List<String> category) {
         this.category = category;
     }
 
-    /**
-     *
-     * @return
-     * The city
-     */
-    @JsonProperty("city")
+    
+   @JsonProperty("city")
     public String getCity() {
         return city;
     }
 
-    /**
-     *
-     * @param city
-     * The city
-     */
-    @JsonProperty("city")
+    
+   @JsonProperty("city")
     public void setCity(String city) {
         this.city = city;
     }
 
-    /**
-     *
-     * @return
-     * The country
-     */
-    @JsonProperty("country")
+    
+   @JsonProperty("country")
     public String getCountry() {
         return country;
     }
 
-    /**
-     *
-     * @param country
-     * The country
-     */
-    @JsonProperty("country")
+    
+   @JsonProperty("country")
     public void setCountry(String country) {
         this.country = country;
     }
 
-    /**
-     *
-     * @return
-     * The description
-     */
-    @JsonProperty("description")
+    
+   @JsonProperty("creation_date")
+    public Long getCreationDate() {
+        return creationDate;
+    }
+
+    
+   @JsonProperty("creation_date")
+    public void setCreationDate(Long creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    
+   @JsonProperty("departement")
+    public String getDepartement() {
+        return departement;
+    }
+
+    
+   @JsonProperty("departement")
+    public void setDepartement(String departement) {
+        this.departement = departement;
+    }
+
+    
+   @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
-    /**
-     *
-     * @param description
-     * The description
-     */
-    @JsonProperty("description")
+    
+   @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     *
-     * @return
-     * The district
-     */
-    @JsonProperty("district")
+    
+   @JsonProperty("district")
     public String getDistrict() {
         return district;
     }
 
-    /**
-     *
-     * @param district
-     * The country
-     */
-    @JsonProperty("district")
+    
+   @JsonProperty("district")
     public void setDistrict(String district) {
         this.district = district;
     }
 
-    /**
-     *
-     * @return
-     * The email
-     */
-    @JsonProperty("email")
+    
+   @JsonProperty("email")
     public String getEmail() {
         return email;
     }
 
-    /**
-     *
-     * @param email
-     * The email
-     */
-    @JsonProperty("email")
+    
+   @JsonProperty("email")
     public void setEmail(String email) {
         this.email = email;
     }
 
-    /**
-     *
-     * @return
-     * The facebook
-     */
-    @JsonProperty("facebookPage")
+    
+   @JsonProperty("email2")
+    public String getEmail2() {
+        return email2;
+    }
+
+    
+   @JsonProperty("email2")
+    public void setEmail2(String email2) {
+        this.email2 = email2;
+    }
+
+    
+   @JsonProperty("facebookPage")
     public String getFacebookPage() {
         return facebookPage;
     }
 
-    /**
-     *
-     * @param facebookPage
-     * The Facebook share link
-     */
-    @JsonProperty("facebookPage")
+    
+   @JsonProperty("facebookPage")
     public void setFacebookPage(String facebookPage) {
         this.facebookPage = facebookPage;
     }
 
-    /**
-     *
-     * @return
-     * The faxnumber
-     */
-    @JsonProperty("faxnumber")
-    public String getFaxnumber() {
-        return faxnumber;
+    
+   @JsonProperty("fax")
+    public String getFax() {
+        return fax;
     }
 
-    /**
-     *
-     * @param faxnumber
-     * The Facebook share link
-     */
-    @JsonProperty("faxnumber")
-    public void setFaxnumber(String faxnumber) {
-        this.faxnumber = faxnumber;
+    
+   @JsonProperty("fax")
+    public void setFax(String fax) {
+        this.fax = fax;
     }
 
-    /**
-     *
-     * @return
-     * The googlePage
-     */
+    
+   @JsonProperty("fax2")
+    public String getFax2() {
+        return fax2;
+    }
+
+    
+   @JsonProperty("fax2")
+    public void setFax2(String fax2) {
+        this.fax2 = fax2;
+    }
+
+    
     @JsonProperty("googlePage")
     public String getGooglePage() {
         return googlePage;
     }
 
-    /**
-     *
-     * @param googlePage
-     * The Google share link
-     */
+
     @JsonProperty("googlePage")
     public void setGooglePage(String googlePage) {
         this.googlePage = googlePage;
     }
 
-    /**
-     *
-     * @return
-     * The listingtype
-     */
+
+    @JsonProperty("instagramPage")
+    public String getInstagramPage() {
+        return instagramPage;
+    }
+
+
+    @JsonProperty("instagramPage")
+    public void setInstagramPage(String instagramPage) {
+        this.instagramPage = instagramPage;
+    }
+
+
+    @JsonProperty("landmark")
+    public String getLandmark() {
+        return landmark;
+    }
+
+
+    @JsonProperty("landmark")
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
+    }
+
+    
+    @JsonProperty("last_update_date")
+    public Long getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+
+    @JsonProperty("last_update_date")
+    public void setLastUpdateDate(Long lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
+    
     @JsonProperty("listingtype")
     public String getListingtype() {
         return listingtype;
     }
-
-    /**
-     *
-     * @param listingtype
-     * The listingtype
-     */
+    
+    
     @JsonProperty("listingtype")
     public void setListingtype(String listingtype) {
         this.listingtype = listingtype;
     }
 
-    /**
-     *
-     * @return
-     * The logo
-     */
+    
     @JsonProperty("logo")
     public String getLogo() {
         return logo;
     }
 
-    /**
-     *
-     * @param logo
-     * The logo
-     */
     @JsonProperty("logo")
     public void setLogo(String logo) {
         this.logo = logo;
     }
 
-    /**
-     *
-     * @return
-     * The mapdata
-     */
     @JsonProperty("mapdata")
     public Mapdata getMapdata() {
         return mapdata;
     }
 
-    /**
-     *
-     * @param mapdata
-     * The mapdata
-     */
     @JsonProperty("mapdata")
     public void setMapdata(Mapdata mapdata) {
         this.mapdata = mapdata;
     }
 
-    /**
-     *
-     * @return
-     * The name
-     */
     @JsonProperty("name")
     public String getName() {
         return name;
     }
 
-    /**
-     *
-     * @param name
-     * The name
-     */
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
-
-    /**
-     *
-     * @return
-     * The neighbour_hood
-     */
-    @JsonProperty("neighbour_hood")
-    public String getNeighbour_hood() {
-        return neighbour_hood;
+    @JsonProperty("neighborhood")
+    public String getNeighborhood() {
+        return neighborhood;
     }
 
-    /**
-     *
-     * @param neighbour_hood
-     * The name
-     */
-    @JsonProperty("neighbour_hood")
-    public void setNeighbour_hood(String neighbour_hood) {
-        this.neighbour_hood = neighbour_hood;
+    @JsonProperty("neighborhood")
+    public void setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
     }
 
-    /**
-     *
-     * @return
-     * The officeLocation
-     */
     @JsonProperty("officeLocation")
     public String getOfficeLocation() {
         return officeLocation;
     }
 
-    /**
-     *
-     * @param officeLocation
-     * The officeLocation
-     */
     @JsonProperty("officeLocation")
     public void setOfficeLocation(String officeLocation) {
         this.officeLocation = officeLocation;
     }
 
-    /**
-     *
-     * @return
-     * The openhours
-     */
     @JsonProperty("openhours")
     public Openhours getOpenhours() {
         return openhours;
     }
 
-    /**
-     *
-     * @param openhours
-     * The openhours
-     */
     @JsonProperty("openhours")
     public void setOpenhours(Openhours openhours) {
         this.openhours = openhours;
     }
 
-    /**
-     *
-     * @return
-     * The phoneNumber
-     */
     @JsonProperty("phoneNumber")
-    public String getPhoneNumber() {
+    public Long getPhoneNumber() {
         return phoneNumber;
     }
 
-    /**
-     *
-     * @param phoneNumber
-     * The phoneNumber
-     */
     @JsonProperty("phoneNumber")
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(Long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    /**
-     *
-     * @return
-     * The pictures
-     */
+    @JsonProperty("phoneNumber2")
+    public Long getPhoneNumber2() {
+        return phoneNumber2;
+    }
+
+    @JsonProperty("phoneNumber2")
+    public void setPhoneNumber2(Long phoneNumber2) {
+        this.phoneNumber2 = phoneNumber2;
+    }
+
     @JsonProperty("pictures")
     public List<String> getPictures() {
         return pictures;
     }
 
-    /**
-     *
-     * @param pictures
-     * The pictures
-     */
     @JsonProperty("pictures")
     public void setPictures(List<String> pictures) {
         this.pictures = pictures;
     }
 
-    /**
-     *
-     * @return
-     * The road
-     */
+    @JsonProperty("postalCode")
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    @JsonProperty("postalCode")
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
     @JsonProperty("road")
-    public String getRoad() {
+    public Long getRoad() {
         return road;
     }
 
-    /**
-     *
-     * @param road
-     * The road
-     */
     @JsonProperty("road")
-    public void setRoad(String road) {
+    public void setRoad(Long road) {
         this.road = road;
     }
 
-    /**
-     *
-     * @return
-     * The secondary_email
-     */
-    @JsonProperty("secondary_email")
-    public String getSecondary_email() {
-        return secondary_email;
+    @JsonProperty("sigle")
+    public String getSigle() {
+        return sigle;
     }
 
-    /**
-     *
-     * @param secondary_email
-     * The secondary_email
-     */
-    @JsonProperty("secondary_email")
-    public void setSecondary_email(String secondary_email) {
-        this.secondary_email = secondary_email;
+    @JsonProperty("sigle")
+    public void setSigle(String sigle) {
+        this.sigle = sigle;
     }
 
-    /**
-     *
-     * @return
-     * The state
-     */
     @JsonProperty("state")
     public String getState() {
         return state;
     }
 
-    /**
-     *
-     * @param state
-     * The state
-     */
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;
     }
 
-    /**
-     *
-     * @return
-     * The suburb
-     */
     @JsonProperty("suburb")
     public String getSuburb() {
         return suburb;
     }
 
-    /**
-     *
-     * @param suburb
-     * The suburb
-     */
     @JsonProperty("suburb")
     public void setSuburb(String suburb) {
         this.suburb = suburb;
     }
 
-    /**
-     *
-     * @return
-     * The twitterPage
-     */
     @JsonProperty("twitterPage")
     public String getTwitterPage() {
         return twitterPage;
     }
 
-    /**
-     *
-     * @param twitterPage
-     * The twitterPage
-     */
     @JsonProperty("twitterPage")
     public void setTwitterPage(String twitterPage) {
         this.twitterPage = twitterPage;
     }
 
-
-    /**
-     *
-     * @return
-     * The uid
-     */
-    @JsonProperty("uid")
-    public String getuid() {
-        return uid;
-    }
-
-    /**
-     *
-     * @param uid
-     * The suburb
-     */
-    @JsonProperty("uid")
-    public void setuid(String uid) {
-        this.uid = uid;
-    }
-
-
-    /**
-     *
-     * @return
-     * The website
-     */
     @JsonProperty("website")
     public String getWebsite() {
         return website;
     }
 
-    /**
-     *
-     * @param website
-     * The website
-     */
     @JsonProperty("website")
     public void setWebsite(String website) {
         this.website = website;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
+    @JsonProperty("youtube")
+    public String getYoutube() {
+        return youtube;
     }
 
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
+    @JsonProperty("youtube")
+    public void setYoutube(String youtube) {
+        this.youtube = youtube;
     }
 
 }

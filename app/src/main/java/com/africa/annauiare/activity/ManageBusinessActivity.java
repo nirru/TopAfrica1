@@ -143,7 +143,7 @@ public class ManageBusinessActivity extends BaseDrawerActivity {
 //                            Log.e("User ref", child.getRef().toString());
 //                            Log.e("User val", child.getValue().toString());
                                 Businesse businesse = child.getValue(Businesse.class);
-                                businesse.setKey(child.getKey());
+//                                businesse.setKey(child.getKey());
                                 categorySearchAdapter.addItem(businesse);
                             }
                     }
@@ -183,7 +183,7 @@ public class ManageBusinessActivity extends BaseDrawerActivity {
                 });
             } else {
                 // The ViewPropertyAnimator APIs are not available, so simply show
-                // and hide the relevant UI components.
+                // and hide the relevant UI  components.
                 recyleView.setVisibility(show ? View.VISIBLE : View.GONE);
                 recyleView.setVisibility(show ? View.GONE : View.VISIBLE);
             }

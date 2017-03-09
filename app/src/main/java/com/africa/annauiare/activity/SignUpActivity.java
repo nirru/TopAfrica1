@@ -216,6 +216,9 @@ public class SignUpActivity extends BaseActivity {
 
     @OnClick(R.id.sign_in)
     public void sign_in(View v){
+      Intent i = new Intent(SignUpActivity.this,LoginActivity.class);
+        startActivity(i);
+        finish();
 
     }
 

@@ -6,21 +6,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.africa.annauiare.activity.HomeActivity">
+    <include
+        android:visibility="gone"
+        android:id="@+id/toolbar"
+        layout="@layout/view_common_toolbar" />
     <RelativeLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
         <ImageView
             android:id="@+id/menuicon"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_menu_icon"
+            android:visibility="visible"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:layout_centerVertical="true"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="visible"
             android:weightSum="2"
             android:layout_toRightOf="@+id/menuicon">
             <RelativeLayout
@@ -92,34 +99,79 @@
             android:layout_weight="0.8"
             android:paddingBottom="@dimen/activity_horizontal_margin"
             android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/edit_what"
+
+            <FrameLayout
+                android:id="@+id/frame_1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="what"
-                android:drawableRight="@drawable/ic_cancel"
-                android:textColorHint="@color/gray_500"
-                android:textColor="@color/black"/>
+                android:layout_height="wrap_content">
+                <AutoCompleteTextView
+                    android:id="@+id/edit_what"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="what"
+                    android:completionThreshold="3"
+                    android:backgroundTint="@android:color/transparent"
+                    android:textColorHint="@color/gray_500"
+                    android:textColor="@color/black"/>
+
+                <ProgressBar
+                    android:id="@+id/progress_bar_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center"
+                    android:visibility="gone"
+                    style="?android:attr/progressBarStyleSmall"/>
+
+                <ImageView
+                    android:id="@+id/cancel_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|right"
+                    android:src="@drawable/ic_cancel"/>
+            </FrameLayout>
+
             <View
                 android:id="@+id/view1"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/edit_what"
+                android:layout_below="@id/frame_1"
                 android:background="@color/gray_500"/>
-            <EditText
-                android:id="@+id/edit_where"
+            <FrameLayout
+                android:id="@+id/frame_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="where"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:layout_below="@+id/view1"
-                android:drawableRight="@drawable/ic_cancel"
-                android:textColorHint="@color/gray_500"
-                android:textColor="@color/black"/>
+                android:layout_below="@+id/view1">
+                <AutoCompleteTextView
+                    android:id="@+id/edit_where"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionThreshold="3"
+                    android:inputType="textCapWords"
+                    android:hint="Where"
+                    android:backgroundTint="@android:color/transparent"
+                    android:textColorHint="@color/gray_500"
+                    android:textColor="@color/black"/>
+
+                <ProgressBar
+                    android:id="@+id/progress_bar_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center"
+                    android:visibility="gone"
+                    style="?android:attr/progressBarStyleSmall"/>
+
+                <ImageView
+                    android:id="@+id/cancel_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|right"
+                    android:src="@drawable/ic_cancel"/>
+            </FrameLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/edit_where"
+                android:layout_below="@id/frame_2"
                 android:background="@color/gray_500"/>
         </RelativeLayout>
         <RelativeLayout
@@ -127,6 +179,7 @@
             android:layout_weight="0.2"
             android:layout_height="match_parent">
             <ImageView
+                android:id="@+id/search_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_search_btn"/>

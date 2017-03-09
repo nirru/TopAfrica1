@@ -184,4 +184,10 @@
     <item type="id" name="id_confirm_pwd"/>
     <item type="id" name="id_nikname"/>
     <item type="id" name="actiongender"/>
+    <item type="id" name="img2"/>
+    <item type="id" name="img3"/>
+    <item type="id" name="img4"/>
+    <item type="id" name="img5"/>
+    <item type="id" name="img6"/>
+    <item type="id" name="img7"/>
 </resources>

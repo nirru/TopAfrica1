@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
+import com.africa.annauiare.ObjectSetter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -22,6 +23,8 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.africa.annauiare.R;
@@ -37,6 +40,7 @@ import java.util.List;
 import butterknife.Bind;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.africa.annauiare.AppConstant.FIREBASE_KEY;
@@ -106,7 +110,22 @@ public class CategoryActivity extends BaseDrawerActivity {
     public void onConnected(Location location) {
         super.onConnected(location);
         if(location != null){
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15.5f));
+            double destinationLatitude = 0,destinationLongitude = 0;
+            if (ObjectSetter.getInstance().getDataSnapshots().size()>0){
+                for (int i = 0; i < ObjectSetter.getInstance().getDataSnapshots().size();i++){
+                    DataSnapshot dataSnapshot = ObjectSetter.getInstance().getDataSnapshots().get(i);
+                    if (dataSnapshot.hasChild("officeLocation")){
+                        String[] geoArray = dataSnapshot.child("officeLocation").getValue().toString().trim().split(",");
+                        destinationLatitude = Double.valueOf(geoArray[0]);
+                        destinationLongitude = Double.valueOf(geoArray[1]);
+                        drawMarker(new LatLng(destinationLatitude,destinationLongitude));
+                    }
+                }
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(destinationLatitude, destinationLongitude), 15.5f));
+            }else{
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15.5f));
+            }
+
         }
 
     }
@@ -115,29 +134,12 @@ public class CategoryActivity extends BaseDrawerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        if (checkPlayServices())
-            buildGoogleApiClient();
+        buildGoogleApiClient();
         setContentView(R.layout.activity_category);
 
-        ITEMS = new ArrayList<Businesse>();
-        if (savedInstanceState == null) {
-            pendingIntroAnimation = true;
-        } else {
-//            feedAdapter.updateItems(false);
+        if (getIvLogo()!=null){
+            getIvLogo().setText(ObjectSetter.getInstance().getSearch().toUpperCase());
         }
-        recyleView.setLayoutManager(new LinearLayoutManager(CategoryActivity.this));
-        categoryListAdapter =  new CategoryListAdapter(ITEMS,CategoryActivity.this);
-        categoryListAdapter.setOnItemClickListener(new CategoryListAdapter.MyClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                Businesse dfdf = ITEMS.get(position);
-                Log.e("SDSD", "" + dfdf.getKey());
-                Intent i = new Intent(CategoryActivity.this, DetailActivity.class);
-                i.putExtra(FIREBASE_KEY,dfdf.getKey());
-                startActivity(i);
-                overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
-            }
-        });
-        recyleView.setAdapter(categoryListAdapter);
         try {
             MapsInitializer.initialize(CategoryActivity.this);
             if (mapView != null) {
@@ -147,88 +149,43 @@ public class CategoryActivity extends BaseDrawerActivity {
         } catch (Exception e) {
             mapsSupported = false;
         }
-        setUpRecyleView();
+        if (ObjectSetter.getInstance().getDataSnapshots().size()>0)
+            setUpRecyleView();
     }
 
     private void initializeMap() {
         if (mMap == null && mapsSupported) {
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                try {
-                    mMap = googleMap;
-                }catch (Exception ex){
-                    ex.printStackTrace();
+            mapView.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    try {
+                        mMap = googleMap;
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                    }
                 }
-            }
-         });
-       }
+            });
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        if (pendingIntroAnimation) {
-            pendingIntroAnimation = false;
-            startIntroAnimation();
-        }
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
-    private void startIntroAnimation() {
-//        fabCreate.setTranslationY(2 * getResources().getDimensionPixelOffset(R.dimen.btn_fab_size));
-//
-        int actionbarSize = Utils.dpToPx(56);
-        getToolbar().setTranslationY(-actionbarSize);
-        getIvLogo().setTranslationY(-actionbarSize);
-
-        getToolbar().animate()
-                .translationY(0)
-                .setDuration(ANIM_DURATION_TOOLBAR)
-                .setStartDelay(300);
-        getIvLogo().animate()
-                .translationY(0)
-                .setDuration(ANIM_DURATION_TOOLBAR)
-                .setStartDelay(400);
-
-    }
-
     private void setUpRecyleView(){
-        String type= "";
-        if (getIntent() != null){
-            type = getIntent().getStringExtra(LandingActivity.KEY);
-        }
-        showProgress(true);
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        com.google.firebase.database.Query wr = mDatabase.child("businesses").orderByChild("category").equalTo(type);
-        RxFirebaseDatabase.observeValueEvent(wr)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<com.google.firebase.database.DataSnapshot>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                        showProgress(false);
-                            for (com.google.firebase.database.DataSnapshot child: dataSnapshot.getChildren()) {
-//                            Log.e("User key", child.getKey());
-//                            Log.e("User ref", child.getRef().toString());
-//                            Log.e("User val", child.getValue().toString());
-                                Businesse businesse = child.getValue(Businesse.class);
-                                businesse.setKey(child.getKey());
-                                categoryListAdapter.addItem(businesse);
-                            }
-
-
-                    }
-                });
+        recyleView.setLayoutManager(new LinearLayoutManager(CategoryActivity.this));
+        categoryListAdapter =  new CategoryListAdapter(ObjectSetter.getInstance().getDataSnapshots(),CategoryActivity.this);
+        categoryListAdapter.setOnItemClickListener(new CategoryListAdapter.MyClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                DataSnapshot dataSnapshot = ObjectSetter.getInstance().getDataSnapshots().get(position);
+                ObjectSetter.getInstance().setDataSnapshot(dataSnapshot);
+                Intent i = new Intent(CategoryActivity.this, DetailActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
+            }
+        });
+        recyleView.setAdapter(categoryListAdapter);
     }
 
     /**
@@ -270,6 +227,17 @@ public class CategoryActivity extends BaseDrawerActivity {
             ex.printStackTrace();
         }
 
+    }
+
+    private void drawMarker(LatLng point){
+        // Creating an instance of MarkerOptions
+        MarkerOptions markerOptions = new MarkerOptions();
+
+        // Setting latitude and longitude for the marker
+        markerOptions.position(point);
+
+        // Adding marker on the Google Map
+        mMap.addMarker(markerOptions);
     }
 
 }

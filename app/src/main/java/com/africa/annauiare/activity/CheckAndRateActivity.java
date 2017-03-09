@@ -138,7 +138,7 @@ public class CheckAndRateActivity extends BaseDrawerActivity {
             public void onItemClick(int position, View v) {
                 Log.e("PSOOOOO","" + position);
                 Intent i = new Intent(CheckAndRateActivity.this, RateMyBusinessActivity.class);
-                i.putExtra(KEY,ITEMS.get(position).getKey());
+//                i.putExtra(KEY,ITEMS.get(position).getKey());
                 i.putExtra(KEY_IMAGE,ITEMS.get(position).getLogo());
                 i.putExtra(KEY_NAME,ITEMS.get(position).getName());
                 startActivity(i);
@@ -154,9 +154,9 @@ public class CheckAndRateActivity extends BaseDrawerActivity {
         mQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Businesse businesse = dataSnapshot.getValue(Businesse.class);
-                businesse.setKey(dataSnapshot.getKey());
-                ratingAdapter.addItem(businesse);
+//                Businesse businesse = dataSnapshot.getValue(Businesse.class);
+//                businesse.setKey(dataSnapshot.getKey());
+//                ratingAdapter.addItem(businesse);
             }
 
             @Override

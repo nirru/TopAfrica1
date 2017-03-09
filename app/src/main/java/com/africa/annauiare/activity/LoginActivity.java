@@ -159,6 +159,7 @@ public class LoginActivity extends BaseActivity {
         if (checkPlayServices())
             buildGoogleApiClient();
         setContentView(R.layout.activity_login);
+        if (getIvLogo()!=null)
         getIvLogo().setText("Login");
         if (getIntent()!=null){
             key = getIntent().getIntExtra(LandingActivity.KEY_ACTIVITY,2);

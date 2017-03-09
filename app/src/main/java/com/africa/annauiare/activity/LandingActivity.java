@@ -1,136 +1,127 @@
 package com.africa.annauiare.activity;
 
-import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Location;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatAutoCompleteTextView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
-import com.google.android.gms.awareness.Awareness;
-import com.google.android.gms.awareness.snapshot.WeatherResult;
-import com.google.android.gms.awareness.state.Weather;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.AutocompletePrediction;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
-
-import com.africa.annauiare.AppConstant;
+import com.africa.annauiare.ObjectSetter;
 import com.africa.annauiare.R;
-import com.africa.annauiare.Utils;
-import com.africa.annauiare.activity.createbusiness.CreateBusiness;
 import com.africa.annauiare.adapter.CategorySearchAdapter;
 import com.africa.annauiare.adapter.FavouriteListAdapter;
 import com.africa.annauiare.adapter.PlaceSearchAutoAdapter;
+import com.africa.annauiare.adapter.SearchAdapter;
+import com.africa.annauiare.adapter.SearchPlaceAdapter;
 import com.africa.annauiare.common.BaseDrawerActivity;
+import com.africa.annauiare.fragment.DiscountFragment;
+import com.africa.annauiare.fragment.PagesFragment;
+import com.africa.annauiare.modal.RxWhatModal;
+import com.africa.annauiare.modal.RxWhereModal;
 import com.africa.annauiare.modal.category.Businesse;
-import com.africa.annauiare.modal.review.Faviourite;
-import com.africa.annauiare.rx.FallbackReverseGeocodeObservable;
-import com.africa.annauiare.rx.firebase.PreciseAddressFunc;
 import com.africa.annauiare.rx.firebase.RxFirebaseDatabase;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import rx.Observable;
-import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.functions.Func2;
+import rx.functions.Func3;
 import rx.schedulers.Schedulers;
 
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static com.africa.annauiare.AppConstant.FIREBASE_KEY;
-
-public class LandingActivity extends BaseDrawerActivity {
+public class LandingActivity extends BaseDrawerActivity implements PagesFragment.OnFragmentInteractionListener,
+        DiscountFragment.OnFragmentInteractionListener{
 
     @Nullable
-    @Bind(R.id.id_search_view)
-    SearchView searchView;
+    @Bind(R.id.edit_what)
+    AutoCompleteTextView searchWhat;
 
     @Nullable
-    @Bind(R.id.id_search_location)
-    AppCompatAutoCompleteTextView autoCompleteTextView;
+    @Bind(R.id.edit_where)
+    AutoCompleteTextView searchWhere;
 
     @Nullable
-    @Bind(R.id.id_recyleview)
-    RecyclerView mRecyleView;
+    @Bind(R.id.progress_bar_1)
+    ProgressBar progressBar_1;
 
     @Nullable
-    @Bind(R.id.id_weather_image)
-    ImageView weather_image;
+    @Bind(R.id.progress_bar_2)
+    ProgressBar progressBar_2;
 
     @Nullable
-    @Bind(R.id.id_weather_temp)
-    TextView weather_temp;
+    @Bind(R.id.cancel_1)
+    ImageView cancel_1;
 
     @Nullable
-    @Bind(R.id.id_weather_location)
-    TextView weather_location;
+    @Bind(R.id.cancel_2)
+    ImageView cancel_2;
+//
+//    @Nullable
+//    @Bind(R.id.id_search_location)
+//    AppCompatAutoCompleteTextView autoCompleteTextView;
+//
+//    @Nullable
+//    @Bind(R.id.id_recyleview)
+//    RecyclerView mRecyleView;
+//
+//    @Nullable
+//    @Bind(R.id.id_weather_image)
+//    ImageView weather_image;
+//
+//    @Nullable
+//    @Bind(R.id.id_weather_temp)
+//    TextView weather_temp;
+//
+//    @Nullable
+//    @Bind(R.id.id_weather_location)
+//    TextView weather_location;
+//
+//    @Nullable
+//    @Bind(R.id.id_recyleview_category)
+//    RecyclerView recyclerView;
+//
+//    @Nullable
+//    @Bind(R.id.id_scroll_view)
+//    ScrollView scrollViewContainer;
+//
+//    @Nullable
+//    @Bind(R.id.id_recyle_relative)
+//    RelativeLayout relativeRecyleContainer;
 
-    @Nullable
-    @Bind(R.id.id_recyleview_category)
-    RecyclerView recyclerView;
+    SearchAdapter searchAdapter;
+    SearchPlaceAdapter searchPlaceAdapter;
+    ArrayList <String> list;
+    ArrayList <String> listPlaces;
 
-    @Nullable
-    @Bind(R.id.id_scroll_view)
-    ScrollView scrollViewContainer;
-
-    @Nullable
-    @Bind(R.id.id_recyle_relative)
-    RelativeLayout relativeRecyleContainer;
-
-    CategorySearchAdapter categorySearchAdapter;
-    PlaceSearchAutoAdapter mAdapter;
-    FavouriteListAdapter favouriteListAdapter;
-
-    public  static  List<Businesse> ITEMS ;
-    public  static  List<Businesse> ITEMS_FAVIOURITE ;
-
-    public static String TIMESTAMP_KEY = null;
-
-    private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
-            new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
-
-    private static final int VERTICAL_ITEM_SPACE = 30;
+    ProgressDialog pDialog;
 
     public static final String KEY = "key";
     public static final String KEY_ACTIVITY = "key_activity";
@@ -177,7 +168,7 @@ public class LandingActivity extends BaseDrawerActivity {
     @Override
     public void fireBaseAuthication(FirebaseUser firebaseUser) {
         super.fireBaseAuthication(firebaseUser);
-        getFaviourite();
+//        getFaviourite();
     }
 
     @Override
@@ -185,269 +176,275 @@ public class LandingActivity extends BaseDrawerActivity {
         super.onCreate(savedInstanceState);
         if (checkPlayServices())
             buildGoogleApiClient();
-        setContentView(R.layout.activity_landing);
-        searchView.onActionViewExpanded();
-        searchView.setIconifiedByDefault(true);
+        setContentView(R.layout.activity_home);
+        createProgress();
         initInstance();
-        initReclyleList();
-//        setupSearchView();
+//        initReclyleList();
+        setupSearchView();
 //        placeSearch();
-//        queryFirebase("shop");
     }
+
 
     private void initInstance(){
-        ITEMS_FAVIOURITE = new ArrayList<>();
-        favouriteListAdapter = new FavouriteListAdapter(ITEMS_FAVIOURITE,LandingActivity.this);
-        favouriteListAdapter.setOnItemClickListener(new FavouriteListAdapter.MyClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                Businesse dfdf = ITEMS_FAVIOURITE.get(position);
-                Log.e("SDSD", "" + dfdf.getKey());
-                Intent i = new Intent(LandingActivity.this, DetailActivity.class);
-                i.putExtra(FIREBASE_KEY,dfdf.getKey());
-                startActivity(i);
-                overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
-            }
-        });
-
-
-        categorySearchAdapter = new CategorySearchAdapter(ITEMS,LandingActivity.this);
-        categorySearchAdapter.setOnItemClickListener(new CategorySearchAdapter.MyClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                Businesse dfdf = ITEMS.get(position);
-                Log.e("SDSD", "" + dfdf.getKey());
-                Intent i = new Intent(LandingActivity.this, DetailActivity.class);
-                i.putExtra(FIREBASE_KEY,dfdf.getKey());
-                startActivity(i);
-                overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
-            }
-        });
+//        list = new ArrayList<>();
+//        listPlaces = new ArrayList<>();
+//        favouriteListAdapter = new FavouriteListAdapter(ITEMS_FAVIOURITE,LandingActivity.this);
+//        favouriteListAdapter.setOnItemClickListener(new FavouriteListAdapter.MyClickListener() {
+//            @Override
+//            public void onItemClick(int position, View v) {
+//                Businesse dfdf = ITEMS_FAVIOURITE.get(position);
+//                Log.e("SDSD", "" + dfdf.getKey());
+//                Intent i = new Intent(LandingActivity.this, DetailActivity.class);
+//                i.putExtra(FIREBASE_KEY,dfdf.getKey());
+//                startActivity(i);
+//                overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
+//            }
+//        });
+//
+//
+//        categorySearchAdapter = new CategorySearchAdapter(ITEMS,LandingActivity.this);
+//        categorySearchAdapter.setOnItemClickListener(new CategorySearchAdapter.MyClickListener() {
+//            @Override
+//            public void onItemClick(int position, View v) {
+//                Businesse dfdf = ITEMS.get(position);
+//                Log.e("SDSD", "" + dfdf.getKey());
+//                Intent i = new Intent(LandingActivity.this, DetailActivity.class);
+//                i.putExtra(FIREBASE_KEY,dfdf.getKey());
+//                startActivity(i);
+//                overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
+//            }
+//        });
     }
 
-    private void initReclyleList(){
-        //add ItemDecoration
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(LandingActivity.this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        mRecyleView.setLayoutManager(new LinearLayoutManager(LandingActivity.this,LinearLayoutManager.HORIZONTAL,false));
-        mRecyleView.setAdapter(favouriteListAdapter);
-    }
+//    private void initReclyleList(){
+//        //add ItemDecoration
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(LandingActivity.this);
+//        recyclerView.setLayoutManager(linearLayoutManager);
+//        mRecyleView.setLayoutManager(new LinearLayoutManager(LandingActivity.this,LinearLayoutManager.HORIZONTAL,false));
+//        mRecyleView.setAdapter(favouriteListAdapter);
+//    }
 
 
     private void setupSearchView()
     {
+
+        list = new ArrayList<>();
+        listPlaces = new ArrayList<>();
+        searchAdapter = new SearchAdapter(LandingActivity.this,list);
+        searchPlaceAdapter = new SearchPlaceAdapter(LandingActivity.this,listPlaces);
+        searchWhat.setAdapter(searchAdapter);
+        searchWhere.setAdapter(searchPlaceAdapter);
         // search hint
-        searchView.setQueryHint(getString(R.string.search_hint));
-        RxSearchView.queryTextChanges(searchView)
-                .debounce(500, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<CharSequence>() {
-                    @Override
-                    public void onCompleted() {
+        searchWhat.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                    }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length()>=3){
+                    doFinalSearchOnBusiness(charSequence);
+                }else{
+                    progressBar_1.setVisibility(View.GONE);
+                    cancel_1.setVisibility(View.VISIBLE);
+                }
 
-                    }
+            }
 
-                    @Override
-                    public void onNext(CharSequence charSequence) {
-                        if(charSequence!=null){
-                            // Here you can get the text
-                            if (charSequence.length()!=0){
-                                relativeRecyleContainer.setVisibility(View.VISIBLE);
-                                scrollViewContainer.setVisibility(View.GONE);
-                                queryFirebase(charSequence);
-                            }else{
-                                categorySearchAdapter.clearItem();
-                                relativeRecyleContainer.setVisibility(View.GONE);
-                                scrollViewContainer.setVisibility(View.VISIBLE);
-                            }
+            @Override
+            public void afterTextChanged(Editable editable) {
 
-                        }
-                    }
-                });
+            }
+        });
+
+        searchWhere.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length()>=3){
+                    doFinalSearchOnPlaces(charSequence);
+                }else{
+                    progressBar_2.setVisibility(View.GONE);
+                    cancel_2.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
-    private void queryFirebase(CharSequence charSequence){
-        ITEMS = new ArrayList<Businesse>();
-        categorySearchAdapter = new CategorySearchAdapter(ITEMS,LandingActivity.this);
-        recyclerView.setAdapter(categorySearchAdapter);
+    private Observable<DataSnapshot> queryFirebaseBusiness(final String charSequence,String orderByChile){
+        progressBar_1.setVisibility(View.VISIBLE);
+        cancel_1.setVisibility(View.GONE);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        com.google.firebase.database.Query wr = mDatabase.child("annuaire").child("businesses").orderByChild(orderByChile)
+                .startAt(charSequence.toString())
+                .endAt(charSequence.toString()+"\uf8ff")
+                .limitToFirst(30);
+        return RxFirebaseDatabase.observeValueEvent(wr)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+    private Observable<DataSnapshot> queryFirebaseBusiness(final String charSequence){
+        progressBar_1.setVisibility(View.VISIBLE);
+        cancel_1.setVisibility(View.GONE);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        com.google.firebase.database.Query wr = mDatabase.child("annuaire").child("businesses")
+                .limitToFirst(30);
+        return RxFirebaseDatabase.observeValueEvent(wr)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+    private Observable<DataSnapshot> queryFirebasePlaces(String query,String name){
+        progressBar_2.setVisibility(View.VISIBLE);
+        cancel_2.setVisibility(View.GONE);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        com.google.firebase.database.Query wr = mDatabase.child("annuaire").child("businesses").orderByChild(name)
+                .startAt(query)
+                .endAt(query.toString()+"\uf8ff")
+                .limitToFirst(20);
+        return RxFirebaseDatabase.observeValueEvent(wr)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
-        Firebase ref = new Firebase(AppConstant.FIREBASE_DATABSE_REFRENCE_URL + "annuaire/businesses");
-
-        Query mQuery = ref.orderByChild("category").startAt(charSequence.toString());
-
-//
-        mQuery.addChildEventListener(new ChildEventListener() {
+    private void doFinalSearchOnBusiness(final CharSequence charSequence){
+        Log.e("YYYYY==", "" + charSequence.toString().toUpperCase());
+        final String category = charSequence.toString().substring(0,1).toUpperCase() + charSequence.toString().substring(1).toLowerCase();
+        Observable<DataSnapshot> businessNameObservable =  queryFirebaseBusiness(charSequence.toString().toUpperCase(),"name");
+        Observable<DataSnapshot> categoryNameObservable =  queryFirebaseBusiness("category");
+        Observable<RxWhatModal> finalObservable = Observable.zip(businessNameObservable, categoryNameObservable, new Func2<DataSnapshot, DataSnapshot, RxWhatModal>() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Businesse businesse = dataSnapshot.getValue(Businesse.class);
-                businesse.setKey(dataSnapshot.getKey());
-                categorySearchAdapter.addItem(businesse);
+            public RxWhatModal call(DataSnapshot dataSnapshot, DataSnapshot dataSnapshot2) {
+                RxWhatModal rxWhatModal = new RxWhatModal();
+                rxWhatModal.setBusinessName(dataSnapshot);
+                rxWhatModal.setBusinessCategory(dataSnapshot2);
+                return rxWhatModal;
+            }
+        });
+
+        finalObservable.subscribe(new Subscriber<RxWhatModal>() {
+            @Override
+            public void onCompleted() {
+
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            public void onError(Throwable e) {
 
             }
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            public void onNext(RxWhatModal rxWhatModal) {
+                searchAdapter.clearItem();
+                progressBar_1.setVisibility(View.GONE);
+                for (com.google.firebase.database.DataSnapshot child: rxWhatModal.getBusinessName().getChildren()) {
+                    try {
+                        String ddf =  child.child("name").getValue().toString();
+                        searchAdapter.addItem(ddf);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                for (com.google.firebase.database.DataSnapshot child: rxWhatModal.getBusinessCategory().getChildren()) {
+
+                    try {
+                        if (child.hasChild("category")) {
+                            ArrayList<String> ddf = (ArrayList<String>) child.child("category").getValue();
+                            for (int i = 0; i < ddf.size(); i++) {
+                                if (ddf.get(i).toString().contains(category))
+                                    searchAdapter.addItem(ddf.get(i).toString());
+                                if (ddf.get(i).toString().contains(charSequence.toString()))
+                                    searchAdapter.addItem(ddf.get(i).toString());
+                            }
+                            searchAdapter.removeDuplicate();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                cancel_1.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+
+    private void doFinalSearchOnPlaces(CharSequence charSequence){
+        final String category = charSequence.toString().substring(0,1).toUpperCase() + charSequence.toString().substring(1).toLowerCase();
+        Log.e("SSSS==",""+ category);
+        Observable<DataSnapshot> cityObservable =  queryFirebasePlaces(category,"city");
+        Observable<DataSnapshot> muncipalityObservable =  queryFirebasePlaces(category,"Municipality");
+        Observable<DataSnapshot> neighbourHoodObservable =  queryFirebasePlaces(category,"neighborhood");
+
+        Observable<RxWhereModal> finalObservable = Observable.zip(cityObservable, muncipalityObservable, neighbourHoodObservable, new Func3<DataSnapshot, DataSnapshot, DataSnapshot, RxWhereModal>() {
+            @Override
+            public RxWhereModal call(DataSnapshot dataSnapshot, DataSnapshot dataSnapshot2, DataSnapshot dataSnapshot3) {
+                RxWhereModal rxWhereModal = new RxWhereModal();
+                rxWhereModal.setCitySnapshot(dataSnapshot);
+                rxWhereModal.setMunciplaitySnapshot(dataSnapshot2);
+                rxWhereModal.setNeighbourHoodSnapshot(dataSnapshot3);
+                return rxWhereModal;
+            }
+        });
+
+        finalObservable.subscribe(new Subscriber<RxWhereModal>() {
+            @Override
+            public void onCompleted() {
 
             }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            public void onError(Throwable e) {
 
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onNext(RxWhereModal rxWhereModal) {
+                searchPlaceAdapter.clearItem();
+                progressBar_2.setVisibility(View.GONE);
+                ArrayList<String> strings = new ArrayList<String>();
+                for (com.google.firebase.database.DataSnapshot child: rxWhereModal.getCitySnapshot().getChildren()) {
+                    String places = child.child("city").getValue().toString();
+                    searchPlaceAdapter.addItem(places);
+                }
+                for (com.google.firebase.database.DataSnapshot child: rxWhereModal.getMunciplaitySnapshot().getChildren()) {
+                    String places = child.child("Municipality").getValue().toString();
+                    searchPlaceAdapter.addItem(places);
+                }
+                for (com.google.firebase.database.DataSnapshot child: rxWhereModal.getNeighbourHoodSnapshot().getChildren()) {
+                    String places = child.child("neighborhood").getValue().toString();
+                    searchPlaceAdapter.addItem(places);
+                }
 
+                searchPlaceAdapter.removeDuplicate();
+                cancel_2.setVisibility(View.VISIBLE);
             }
         });
     }
 
 
 
-    private void placeSearch(){
-        mAdapter = new PlaceSearchAutoAdapter(LandingActivity.this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY,
-                null);
-        autoCompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
-        autoCompleteTextView.setAdapter(mAdapter);
-    }
+    private void searchDirectory(){
+        showProgress();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        com.google.firebase.database.Query wr = mDatabase.child("annuaire").child("businesses").orderByChild("name").equalTo(searchWhat.getText().toString().toUpperCase());
 
-    /**
-     * Listener that handles selections from suggestions from the AutoCompleteTextView that
-     * displays Place suggestions.
-     * Gets the place id of the selected item and issues a request to the Places Geo Data API
-     * to retrieve more details about the place.
-     *
-     * @see com.google.android.gms.location.places.GeoDataApi#getPlaceById(com.google.android.gms.common.api.GoogleApiClient,
-     * String...)
-     */
-    private AdapterView.OnItemClickListener mAutocompleteClickListener
-            = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            in.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
-            /*
-             Retrieve the place ID of the selected item from the Adapter.
-             The adapter stores each Place suggestion in a AutocompletePrediction from which we
-             read the place ID and title.
-              */
-            final AutocompletePrediction item = mAdapter.getItem(position);
-            final String placeId = item.getPlaceId();
-            final CharSequence primaryText = item.getPrimaryText(null);
-
-            Log.i("MAP", "Autocomplete item selected: " + primaryText);
-
-            /*
-             Issue a request to the Places Geo Data API to retrieve a Place object with additional
-             details about the place.
-              */
-            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                    .getPlaceById(mGoogleApiClient, placeId);
-            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
-
-            Toast.makeText(LandingActivity.this, "Clicked: " + primaryText,
-                    Toast.LENGTH_SHORT).show();
-            Log.i("MAP", "Called getPlaceById to get Place details for " + placeId);
-        }
-    };
-
-    /**
-     * Callback for results from a Places Geo Data API query that shows the first place result in
-     * the details view on screen.
-     */
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
-            = new ResultCallback<PlaceBuffer>() {
-        @Override
-        public void onResult(PlaceBuffer places) {
-            if (!places.getStatus().isSuccess()) {
-                // Request did not complete successfully
-                Log.e("MAP", "Place query did not complete. Error: " + places.getStatus().toString());
-                places.release();
-                return;
-            }
-
-            stopLocationUpdates();
-
-            // Get the Place object from the buffer.
-            final Place place = places.get(0);
-
-
-            // Format details of the place for display and show it in a TextView.
-//            mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
-//                    place.getId(), place.getAddress(), place.getPhoneNumber(),
-//                    place.getWebsiteUri()));
-
-            Log.i("MAP", "Place details received: " + place.getName());
-
-            places.release();
-        }
-    };
-
-    @Override
-    public void onConnected(final Location location) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(LandingActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                ActivityCompat.requestPermissions(LandingActivity.this, new String[]{ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-                return;
-            } else {
-//                getStringAdress(location.getLatitude(),location.getLongitude(),5,autoCompleteTextView);
-//                Awareness.SnapshotApi.getWeather(mGoogleApiClient)
-//                        .setResultCallback(new ResultCallback<WeatherResult>() {
-//                            @Override
-//                            public void onResult(@NonNull WeatherResult weatherResult) {
-//                                if (!weatherResult.getStatus().isSuccess()) {
-//                                    Log.e(TAG, "Could not get weather.");
-//                                    return;
-//                                }
-//                                Weather weather = weatherResult.getWeather();
-////                                Log.e(TAG, "Weather: " + weather);
-//                                setWeatherReport(weather,location);
-//                            }
-//                        });
-            }
-        }
-        else {
-//            getStringAdress(location.getLatitude(),location.getLongitude(),5,autoCompleteTextView);
-//            Awareness.SnapshotApi.getWeather(mGoogleApiClient)
-//                    .setResultCallback(new ResultCallback<WeatherResult>() {
-//                        @Override
-//                        public void onResult(@NonNull WeatherResult weatherResult) {
-//                            if (!weatherResult.getStatus().isSuccess()) {
-//                                Log.e(TAG, "Could not get weather.");
-//                                return;
-//                            }
-//                            Weather weather = weatherResult.getWeather();
-////                            Log.e(TAG, "Weather: " + weather);
-//                            setWeatherReport(weather,location);
-//                        }
-//                    });
-        }
-    }
-
-    private void getStringAdress(double lat, double lng, final int pos, final TextView textView){
-        FallbackReverseGeocodeObservable.createObservable(Locale.getDefault(),lat,lng,1)
-                .map(new Func1<List<Address>, Address>() {
-                    @Override
-                    public Address call(List<Address> addresses) {
-                        return addresses != null && !addresses.isEmpty() ? addresses.get(0) : null;
-                    }
-                })
-                .map(new PreciseAddressFunc(lat,lng))
-                .subscribeOn(Schedulers.io())               // use I/O thread to query for addresses
+        final ArrayList<com.google.firebase.database.DataSnapshot> dataSnapshots = new ArrayList<>();
+        RxFirebaseDatabase.observeValueEvent(wr)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<ArrayList<String>>() {
+                .subscribe(new Subscriber<com.google.firebase.database.DataSnapshot>() {
                     @Override
                     public void onCompleted() {
 
@@ -455,93 +452,50 @@ public class LandingActivity extends BaseDrawerActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                       e.printStackTrace();
+                        e.printStackTrace();
                     }
 
                     @Override
-                    public void onNext(ArrayList<String> strings) {
-                        if (strings.get(pos)!=null)
-                        textView.setHint(strings.get(pos));
+                    public void onNext(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                        dismissProgress();
+                        for (com.google.firebase.database.DataSnapshot child: dataSnapshot.getChildren()) {
+//                            Log.e("User key", child.getKey());
+//                            Log.e("User ref", child.getRef().toString());
+//                            Log.e("User val", child.getValue().toString());
+                            if (child.child("Municipality").getValue().toString().equals(searchWhere.getText().toString())){
+                                dataSnapshots.add(child);
+                            }if (child.child("city").getValue().toString().equals(searchWhere.getText().toString())){
+                                dataSnapshots.add(child);
+                            }if (child.child("neighborhood").getValue().toString().equals(searchWhere.getText().toString())){
+                                dataSnapshots.add(child);
+                            }
+                        }
+
+                        if (dataSnapshots.size()>0){
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ObjectSetter.getInstance().setDataSnapshots(dataSnapshots);
+                                    Log.e("User val==", "" + ObjectSetter.getInstance().getDataSnapshots().size());
+                                    startActivity(new Intent(LandingActivity.this,CategoryActivity.class));
+                                }
+                            }, 300);
+                        }
+                        else {
+                            Toast.makeText(LandingActivity.this,"Sorry No match found",Toast.LENGTH_SHORT).show();
+                        }
+
+
                     }
                 });
     }
 
 
-    private void setWeatherReport(Weather weather,Location location){
-        assert weather_image != null;
-        weather_image.setImageResource(getWeatherIcon(weather));
-        assert weather_temp != null;
-        weather_temp.setText("Temp:" + Utils.round(weather.getTemperature(2),2) + "°C") ;
-        assert weather_location != null && location !=null;
-        getStringAdress(location.getLatitude(),location.getLongitude(),0,weather_location);
-        assert weather_location != null;
-        weather_location.setTextColor(Color.WHITE);
-    }
-
-    @OnClick(R.id.id_business_card_1)
-    public void wheatherClick(View v){
-        Log.e("ssdd","" + "sadfd");
-    }
-    @OnClick(R.id.id_business_card_2)
-    public void restaurentClick(View v){
-        startNextActivity("Food");
-    }
-    @OnClick(R.id.id_business_card_3)
-    public void barClicked(View v){
-      startNextActivity("Bar");
-    }
-    @OnClick(R.id.id_business_card_4)
-    public void hotelClicked(View v){
-      startNextActivity("Hotels");
-    }
-    @OnClick(R.id.id_business_card_5)
-    public void fuelClicked(View v){
-       startNextActivity("Gas stations");
-    }
-    @OnClick(R.id.id_business_card_6)
-    public void parkingClicked(View v){
-      startNextActivity("Movie Theatres");
-    } @OnClick(R.id.id_business_card_7)
-    public void pharmaciesClicked(View v){
-      startNextActivity("Pharmacies");
-    } @OnClick(R.id.id_business_card_8)
-    public void hospitalClicked(View v){
-     startNextActivity("Hospital");
-    }
-    @OnClick(R.id.id_business_card_9)
-    public void medicinesClicked(View v){
-      startNextActivity("Doctor");
-    }
-
-    @OnClick(R.id.id_check_rate)
-    public void checkAndRate(View v) {
-        if (firebaseUser != null) {
-            Intent i = new Intent(LandingActivity.this, CheckAndRateActivity.class);
-            startActivity(i);
-            overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
-        } else {
-            yesNoAlert(LandingActivity.this, "Alert", "You must be login to Rate the bussiness.Do you want to proceed further?",1);
-        }
-    }
-
-    @OnClick(R.id.id_create_business)
-    public void createBusiness(View v){
-        if(firebaseUser!=null){
-            Intent i = new Intent(LandingActivity.this, CreateBusiness.class);
-            startActivity(i);
-            overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
-        }else{
-            yesNoAlert(LandingActivity.this,"Alert","You must be login to list your business.Do you want to proceed further?",2);
-        }
+    @OnClick(R.id.menuicon)
+    public void onMenuCLick(View v){
+        openDrawer();
 
     }
-    private void startNextActivity(String type){
-        Intent i = new Intent(this, CategoryActivity.class);
-        i.putExtra(KEY,type);
-        startActivity(i);
-        overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
-    }
-
     public void yesNoAlert(final Context mContext,String title,String message ,final int key){
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext,R.style.MyDialogTheme);
 
@@ -573,116 +527,125 @@ public class LandingActivity extends BaseDrawerActivity {
     /**
      * Shows the progress UI and hides the login form.
      */
-//    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-//    public  void showProgress(final boolean show) {
-//        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-//        // for very easy animations. If available, use these APIs to fade-in
-//        // the progress spinner.
-//        try{
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-//                int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-//
-//                recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
-//                recyclerView.animate().setDuration(shortAnimTime).alpha(
-//                        show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-//                    @Override
-//                    public void onAnimationEnd(Animator animation) {
-//                        recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
-//                    }
-//                });
-//
-//                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//                mProgressView.animate().setDuration(shortAnimTime).alpha(
-//                        show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-//                    @Override
-//                    public void onAnimationEnd(Animator animation) {
-//                        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//                    }
-//                });
-//            } else {
-//                // The ViewPropertyAnimator APIs are not available, so simply show
-//                // and hide the relevant UI components.
-//                recyclerView.setVisibility(show ? View.VISIBLE : View.GONE);
-//                recyclerView.setVisibility(show ? View.GONE : View.VISIBLE);
-//            }
-//        }catch (Exception ex){
-//            ex.printStackTrace();
-//        }
-//
-//    }
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    public  void createProgress() {
+        pDialog = new ProgressDialog(LandingActivity.this);
+        pDialog.setCancelable(false);
+        pDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+        pDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-    private void getFaviourite(){
-        if (favouriteListAdapter!=null)
-            favouriteListAdapter.clearItem();
-        favouriteListAdapter.notifyDataSetChanged();
-        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        com.google.firebase.database.Query wr = mDatabase.child("favourite").orderByChild("uid").equalTo(firebaseUser.getUid());
-        RxFirebaseDatabase.observeSingleValueEvent(wr)
-                .flatMapIterable(new Func1<com.google.firebase.database.DataSnapshot, Iterable<com.google.firebase.database.DataSnapshot>>() {
-                    @Override
-                    public Iterable<com.google.firebase.database.DataSnapshot> call(com.google.firebase.database.DataSnapshot dataSnapshot) {
-
-                        return dataSnapshot.getChildren();
-                    }
-                })
-                .flatMap(new Func1<com.google.firebase.database.DataSnapshot, Observable<com.google.firebase.database.DataSnapshot>>() {
-                    @Override
-                    public Observable<com.google.firebase.database.DataSnapshot> call(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                        Faviourite faviourite = dataSnapshot.getValue(Faviourite.class);
-                        com.google.firebase.database.Query wr = mDatabase.child("businesses").orderByKey().equalTo(faviourite.getBusiness());
-                        return RxFirebaseDatabase.observeSingleValueEvent(wr);
-                    }
-                })
-                .doOnEach(new Observer<com.google.firebase.database.DataSnapshot>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                        for (com.google.firebase.database.DataSnapshot child: dataSnapshot.getChildren()) {
-//                            Log.e("User key", child.getKey());
-//                            Log.e("User ref", child.getRef().toString());
-//                            Log.e("User val", child.getValue().toString());
-                            Businesse buss = child.getValue(Businesse.class);
-//                            favouriteListAdapter.addItem(buss);
-                        }
-
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<com.google.firebase.database.DataSnapshot>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                      e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                        for (com.google.firebase.database.DataSnapshot child: dataSnapshot.getChildren()) {
-//                            Log.e("User key", child.getKey());
-//                            Log.e("User ref", child.getRef().toString());
-//                            Log.e("User val", child.getValue().toString());
-                            Businesse buss = child.getValue(Businesse.class);
-                            buss.setKey(child.getKey());
-                            favouriteListAdapter.addItem(buss);
-                        }
-
-                    }
-                });
     }
 
+    private void showProgress(){
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+        pDialog.show();
+    }
 
+    private void dismissProgress(){
+        pDialog.dismiss();
+    }
+
+//    private void getFaviourite(){
+//        if (favouriteListAdapter!=null)
+//            favouriteListAdapter.clearItem();
+//        favouriteListAdapter.notifyDataSetChanged();
+//        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+//        com.google.firebase.database.Query wr = mDatabase.child("favourite").orderByChild("uid").equalTo(firebaseUser.getUid());
+//        RxFirebaseDatabase.observeSingleValueEvent(wr)
+//                .flatMapIterable(new Func1<com.google.firebase.database.DataSnapshot, Iterable<com.google.firebase.database.DataSnapshot>>() {
+//                    @Override
+//                    public Iterable<com.google.firebase.database.DataSnapshot> call(com.google.firebase.database.DataSnapshot dataSnapshot) {
+//
+//                        return dataSnapshot.getChildren();
+//                    }
+//                })
+//                .flatMap(new Func1<com.google.firebase.database.DataSnapshot, Observable<com.google.firebase.database.DataSnapshot>>() {
+//                    @Override
+//                    public Observable<com.google.firebase.database.DataSnapshot> call(com.google.firebase.database.DataSnapshot dataSnapshot) {
+//                        Faviourite faviourite = dataSnapshot.getValue(Faviourite.class);
+//                        com.google.firebase.database.Query wr = mDatabase.child("businesses").orderByKey().equalTo(faviourite.getBusiness());
+//                        return RxFirebaseDatabase.observeSingleValueEvent(wr);
+//                    }
+//                })
+//                .doOnEach(new Observer<com.google.firebase.database.DataSnapshot>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                    e.printStackTrace();
+//                    }
+//
+//                    @Override
+//                    public void onNext(com.google.firebase.database.DataSnapshot dataSnapshot) {
+//                        for (com.google.firebase.database.DataSnapshot child: dataSnapshot.getChildren()) {
+////                            Log.e("User key", child.getKey());
+////                            Log.e("User ref", child.getRef().toString());
+////                            Log.e("User val", child.getValue().toString());
+//                            Businesse buss = child.getValue(Businesse.class);
+////                            favouriteListAdapter.addItem(buss);
+//                        }
+//
+//                    }
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<com.google.firebase.database.DataSnapshot>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                      e.printStackTrace();
+//                    }
+//
+//                    @Override
+//                    public void onNext(com.google.firebase.database.DataSnapshot dataSnapshot) {
+//                        for (com.google.firebase.database.DataSnapshot child: dataSnapshot.getChildren()) {
+////                            Log.e("User key", child.getKey());
+////                            Log.e("User ref", child.getRef().toString());
+////                            Log.e("User val", child.getValue().toString());
+//                            Businesse buss = child.getValue(Businesse.class);
+//                            buss.setKey(child.getKey());
+//                            favouriteListAdapter.addItem(buss);
+//                        }
+//
+//                    }
+//                });
+//    }
+
+
+    @Nullable
+    @OnClick(R.id.search_image)
+    public void searchMe(View v){
+        if (!searchWhat.getText().toString().equals("") && !searchWhere.getText().toString().equals("")){
+            ObjectSetter.getInstance().setSearch(searchWhat.getText().toString());
+            searchDirectory();
+        }
+
+    }
+
+    @Nullable
+    @OnClick(R.id.cancel_1)
+    public void clearWhat(View v){
+        progressBar_1.setVisibility(View.GONE);
+        searchWhat.setText("");
+    }
+
+    @Nullable
+    @OnClick(R.id.cancel_2)
+    public void clearWhere(View v){
+        progressBar_2.setVisibility(View.GONE);
+        searchWhere.setText("");
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }

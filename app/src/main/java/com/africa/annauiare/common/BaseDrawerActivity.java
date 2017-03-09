@@ -1,5 +1,6 @@
 package com.africa.annauiare.common;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -276,6 +277,7 @@ public class BaseDrawerActivity extends BaseActivity {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void startLoginActivity(){
         Intent i = new Intent(BaseDrawerActivity.this, LoginActivity.class);
         startActivity(i);
@@ -355,6 +357,13 @@ public class BaseDrawerActivity extends BaseActivity {
             ex.printStackTrace();
 
         }
+    }
+
+    public void openDrawer(){
+        drawerLayout.openDrawer(Gravity.LEFT);
+    }
+    public void closeDrawer(){
+        drawerLayout.closeDrawers();
     }
 
 }

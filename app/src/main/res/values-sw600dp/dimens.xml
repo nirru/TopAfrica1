@@ -32,4 +32,9 @@
     <dimen name="edittext_height">40dp</dimen>
     <dimen name="reg3_padding">25dp</dimen>
     <dimen name="padding_20">20dp</dimen>
+
+
+    <dimen name="map_height">180dp</dimen>
+    <dimen name="view_height">70dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
 </resources>
